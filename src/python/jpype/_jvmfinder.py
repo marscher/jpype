@@ -19,6 +19,9 @@ import os
 
 # ------------------------------------------------------------------------------
 
+class JVMNotFoundException(RuntimeError):
+    pass
+
 class JVMFinder(object):
     """
     JVM library finder base class
@@ -54,7 +57,10 @@ class JVMFinder(object):
 
         else:
             # File not found
-            return None
+            raise JVMNotFoundException("Sorry no JVM could be found."
+                                       " Please ensure your JAVA_HOME"
+                                       " environment variable is pointing"
+                                       " to correct installation.")
 
 
     def find_possible_homes(self, parents):

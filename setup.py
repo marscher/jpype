@@ -71,6 +71,9 @@ elif sys.platform == 'darwin':
         platform_specific['include_dirs'] += os.path.join(java_home, 'include', 'darwin')
 else: # linux
     platform_specific['libraries'] = ['dl']
+    if java_home:
+        platform_specific['include_dirs'] += os.path.join(java_home, 'include', 'linux')
+ 
 
 # try to use NumPy and define macro 'HAVE_NUMPY' if its the case, so arrays
 # returned from Java can be wrapped efficiently in a ndarray.

@@ -57,7 +57,7 @@ if sys.platform == 'win32':
     platform_specific['define_macros'] = [('WIN32', 1)]
     platform_specific['extra_compile_args'] = ['/EHsc']
     if java_home:
-        platform_specific['include_dirs'] += os.path.join(java_home, 'include', 'win32')
+        platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'win32')]
         # TODO: investigate if this is really neccessary, since it will fail if java_home is None
         platform_specific['library_dir'] = [os.path.join(java_home, 'lib')]
 
@@ -68,11 +68,11 @@ elif sys.platform == 'darwin':
     #platform_specific['library_dir'] = [os.path.join(java_home, 'Libraries')]
     platform_specific['define_macros'] = [('MACOSX', 1)]
     if java_home:
-        platform_specific['include_dirs'] += os.path.join(java_home, 'include', 'darwin')
+        platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'darwin')]
 else: # linux
     platform_specific['libraries'] = ['dl']
     if java_home:
-        platform_specific['include_dirs'] += os.path.join(java_home, 'include', 'linux')
+        platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'linux')]
  
 
 # try to use NumPy and define macro 'HAVE_NUMPY' if its the case, so arrays

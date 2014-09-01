@@ -10,10 +10,8 @@ env:
 
 before_install:
   - sudo apt-get update -qq
-
-install:
   - sudo apt-get install -qq openjdk-7-jdk openjdk-7-jre ant
   - pip install tox
 
 script:
-  - tox -e $TOX_ENV
+  - tox

@@ -1130,9 +1130,10 @@ jint JNI_GetDefaultJavaVMInitArgs(void*);
 jint JNI_CreateJavaVM(JavaVM**, JNIEnv**, void*);
 jint JNI_GetCreatedJavaVMs(JavaVM**, jsize, jsize*);
 
-#define JNIIMPORT
-#define JNIEXPORT  __attribute__ ((visibility ("default")))
-#define JNICALL
+// commented out by marscher
+//#define JNIIMPORT
+//#define JNIEXPORT  __attribute__ ((visibility ("default")))
+//#define JNICALL
 
 /*
  * Prototypes for functions exported by loadable shared libs.  These are

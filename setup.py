@@ -97,7 +97,7 @@ class my_build_ext(build_ext):
         (opt,) = get_config_vars('OPT')
         if opt:
             os.environ['OPT'] = ' '.join(flag for flag in opt.split() 
-                                      and flag != '-Wstrict-prototypes')
+                                         if flag != '-Wstrict-prototypes')
         build_ext.initialize_options(self)
 
 setup(

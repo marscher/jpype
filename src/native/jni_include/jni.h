@@ -1068,10 +1068,10 @@ struct JNIInvokeInterface {
     void*       reserved2;
 
     jint        (*DestroyJavaVM)(JavaVM*);
-    jint        (*AttachCurrentThread)(JavaVM*, JNIEnv**, void*);
+    jint        (*AttachCurrentThread)(JavaVM*, void**, void*);
     jint        (*DetachCurrentThread)(JavaVM*);
     jint        (*GetEnv)(JavaVM*, void**, jint);
-    jint        (*AttachCurrentThreadAsDaemon)(JavaVM*, JNIEnv**, void*);
+    jint        (*AttachCurrentThreadAsDaemon)(JavaVM*, void**, void*);
 };
 
 /*
@@ -1083,13 +1083,13 @@ struct _JavaVM {
 #if defined(__cplusplus)
     jint DestroyJavaVM()
     { return functions->DestroyJavaVM(this); }
-    jint AttachCurrentThread(JNIEnv** p_env, void* thr_args)
+    jint AttachCurrentThread(void** p_env, void* thr_args)
     { return functions->AttachCurrentThread(this, p_env, thr_args); }
     jint DetachCurrentThread()
     { return functions->DetachCurrentThread(this); }
     jint GetEnv(void** env, jint version)
     { return functions->GetEnv(this, env, version); }
-    jint AttachCurrentThreadAsDaemon(JNIEnv** p_env, void* thr_args)
+    jint AttachCurrentThreadAsDaemon(void** p_env, void* thr_args)
     { return functions->AttachCurrentThreadAsDaemon(this, p_env, thr_args); }
 #endif /*__cplusplus*/
 };

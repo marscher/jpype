@@ -46,10 +46,12 @@ class myThread (threading.Thread):
         self._msg("trying to access jvm")
         try:
             jpype.java.lang.System.out.println(self.name + ": hello world")
-            #time.sleep(1)
+            #time.sleep(1)q
             self.success = True
         except:
             self._msg("exception")
+            import traceback
+            self._msg(traceback.format_exc())
             self.success = False
         finally:
             jpype.detachThreadFromJVM()

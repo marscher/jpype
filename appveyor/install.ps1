@@ -172,7 +172,7 @@ function InstallMinicondaPip ($python_home) {
     }
 }
 
-function Expand-ZIPFile($file, $destination)
+function ExpandZIPFile($file, $destination)
 {
 	$shell = new-object -com shell.application
 	$zip = $shell.NameSpace($file)
@@ -190,7 +190,7 @@ function InstallAnt() {
  	$dest = "C:\ant"
  	$webclient.DownloadFile($ant_url, $filepath)
  	
- 	Expand-ZIPFile $filepath $dest
+ 	ExpandZIPFile -file $filepath -destination $dest
  	
  	# permantently append $dest\bin to PATH
  	[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )

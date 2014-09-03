@@ -3,6 +3,8 @@ JPype
 
 .. image:: https://travis-ci.org/originell/jpype.png?branch=master
    :target: https://travis-ci.org/originell/jpype
+
+.. image:: https://ci.appveyor.com/project/marscher/jpype/branch/trytox
    
 JPype is an effort to allow python programs full access to java class
 libraries. 

@@ -192,9 +192,8 @@ function InstallAnt() {
  	
  	Expand-ZIPFile --File $filepath --Destination $dest
  	
- 	
  	# permantently append $dest\bin to PATH
- 	[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + dest + "\bin", [System.EnvironmentVariableTarget]::Machine )
+ 	[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )
 }
 
 function main () {

@@ -190,7 +190,7 @@ function InstallAnt() {
  	$dest = "C:\ant"
  	$webclient.DownloadFile($ant_url, $filepath)
  	
- 	Expand-ZIPFile --File $filepath --Destination $dest
+ 	Expand-ZIPFile $filepath $dest
  	
  	# permantently append $dest\bin to PATH
  	[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )

@@ -47,7 +47,6 @@ class JVMFinder(object):
         :return: The first found file path, or None
         """
         # Look for the file
-        print "find_libjvm:", self._libfile
         for root, _, names in os.walk(java_home):
             if self._libfile in names:
                 # Found it

@@ -172,9 +172,31 @@ function InstallMinicondaPip ($python_home) {
     }
 }
 
+function Expand-ZIPFile($file, $destination)
+{
+	$shell = new-object -com shell.application
+	$zip = $shell.NameSpace($file)
+	foreach($item in $zip.items())
+	{
+		$shell.Namespace($destination).copyhere($item)
+	}
+}
+
+function InstallAnt() {
+    $ant_url = http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip
+ 	$webclient = New-Object System.Net.WebClient
+ 	
+ 	$filepath = C:\ant.zip
+ 	
+ 	$webclient.DownloadFile($ant_url, $filepath)
+ 	
+ 	Expand-ZIPFile --File $filepath --Destination C:\ant
+}
+
 function main () {
     InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallPip $env:PYTHON
+    InstallAnt
 }
 
 main

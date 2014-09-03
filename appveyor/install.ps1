@@ -174,6 +174,7 @@ function InstallMinicondaPip ($python_home) {
 
 function ExpandZIPFile($file, $destination)
 {
+	Host-Write "extract " $file " to " $destination
 	$shell = new-object -com shell.application
 	$zip = $shell.NameSpace($file)
 	foreach($item in $zip.items())
@@ -188,7 +189,14 @@ function InstallAnt() {
  	
  	$filepath = "C:\ant.zip"
  	$dest = "C:\ant"
+ 	
+ 	Host-Write "downloading ant"
  	$webclient.DownloadFile($ant_url, $filepath)
+ 	
+ 	if (! Test-Path $filepath) {
+ 		Write-Host "download of ant failed"
+ 		Exit 1
+ 	}
  	
  	ExpandZIPFile -file $filepath -destination $dest
  	

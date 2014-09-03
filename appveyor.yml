@@ -54,7 +54,7 @@ test_script:
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python test/findjvm.py"
-  - "%CMD_IN_ENV% python test/testsuite.py"
+  - "%CMD_IN_ENV% python -vvv test/testsuite.py"
 
 after_test:
   # If tests are successful, create a whl package for the project.

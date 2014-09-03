@@ -183,14 +183,18 @@ function Expand-ZIPFile($file, $destination)
 }
 
 function InstallAnt() {
-    $ant_url = http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip
+    $ant_url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
  	$webclient = New-Object System.Net.WebClient
  	
- 	$filepath = C:\ant.zip
- 	
+ 	$filepath = "C:\ant.zip"
+ 	$dest = "C:\ant"
  	$webclient.DownloadFile($ant_url, $filepath)
  	
- 	Expand-ZIPFile --File $filepath --Destination C:\ant
+ 	Expand-ZIPFile --File $filepath --Destination $dest
+ 	
+ 	
+ 	# permantently append $dest\bin to PATH
+ 	[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + dest + "\bin", [System.EnvironmentVariableTarget]::Machine )
 }
 
 function main () {

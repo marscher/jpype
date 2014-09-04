@@ -172,36 +172,39 @@ function InstallMinicondaPip ($python_home) {
     }
 }
 
-function ExpandZIPFile($file, $destination)
-{
-	Host-Write "extract " $file " to " $destination
-	$shell = new-object -com shell.application
-	$zip = $shell.NameSpace($file)
-	foreach($item in $zip.items())
-	{
-		$shell.Namespace($destination).copyhere($item)
-	}
+function ExpandZIPFile($file, $destination) {
+    if (-Not (Test-Path $file)) {
+        Host-Write "File " $file "does not exist!"
+        return
+    }
+    Host-Write "extract " $file " to " $destination
+    $shell = new-object -com shell.application
+    $zip = $shell.NameSpace($file)
+    foreach($item in $zip.items())
+    {
+        $shell.Namespace($destination).copyhere($item)
+    }
 }
 
 function InstallAnt() {
     $ant_url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
- 	$webclient = New-Object System.Net.WebClient
- 	
- 	$filepath = "C:\ant.zip"
- 	$dest = "C:\ant"
- 	
- 	Host-Write "downloading ant"
- 	$webclient.DownloadFile($ant_url, $filepath)
- 	
- 	if (! Test-Path $filepath) {
- 		Write-Host "download of ant failed"
- 		Exit 1
- 	}
- 	
- 	ExpandZIPFile -file $filepath -destination $dest
- 	
- 	# permantently append $dest\bin to PATH
- 	[Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )
+    $webclient = New-Object System.Net.WebClient
+
+    $filepath = "C:\ant.zip"
+    $dest = "C:\ant"
+
+    Host-Write "downloading ant"
+    $webclient.DownloadFile($ant_url, $filepath)
+
+    if (-Not (Test-Path $filepath)) {
+        Write-Host "download of ant failed"
+        Exit 1
+    }
+
+    ExpandZIPFile -file $filepath -destination $dest
+
+    # permantently append $dest\bin to PATH
+    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )
 }
 
 function main () {

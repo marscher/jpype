@@ -55,9 +55,9 @@ install:
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - "SET PATH=C:\ant-bin;%PATH%"
+  - "SET PATH=C:\\ant-bin;%PATH%"
   - ant --help
-  - ant -f test\build.xml
+  - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python test/testsuite.py"

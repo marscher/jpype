@@ -198,7 +198,7 @@ function unzipAnt($file, $destination) {
 }
 
 function DownloadAnt() {
-    $url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
+    $url = "http://www.us.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.zip"
     $webclient = New-Object System.Net.WebClient
     $filepath = "C:\ant.zip"
 	
@@ -244,7 +244,7 @@ function InstallAnt() {
     $new_path =  $env:Path + ";" + $ant_path
     #Write-Host $new_path
     # set user env var path with $new_path
-    [Environment]::SetEnvironmentVariable("Path", $new_path, "user")
+    #[Environment]::SetEnvironmentVariable("Path", $new_path, "user")
 
     #write-host $env:path
     #$foo= [Environment]::GetEnvironmentVariable("path", "user")
@@ -252,7 +252,10 @@ function InstallAnt() {
     #$env:path = $foo
     #cd C:
     #dir $ant_path
-    RunCommand "cmd" "/c echo %path%"
+    
+    # use setx to set new path
+    $args = "/c setx PATH '%PATH%;" + $new_path + "'"
+    RunCommand "cmd" $args
 }
 
 function main () {

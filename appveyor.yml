@@ -56,6 +56,8 @@ build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
   - "SET PATH=C:\\ant-bin;%PATH%"
+  - echo %path%
+  - where ant
   - ant --help
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests

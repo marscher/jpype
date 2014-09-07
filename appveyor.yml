@@ -58,7 +58,7 @@ test_script:
   - ls
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
-  - "C:\ant-bin\ant -f test/build.xml"
+  - C:\ant-bin\ant -f test\build.xml
   - "%CMD_IN_ENV% python test/testsuite.py"
 
 after_test:

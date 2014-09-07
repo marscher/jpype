@@ -254,7 +254,7 @@ function InstallAnt() {
     #dir $ant_path
     
     # use setx to set new path
-    $args = "/c setx PATH '%PATH%;" + $new_path + "'"
+    $args = "/c setx PATH " + $new_path
     RunCommand "cmd" $args
 }
 

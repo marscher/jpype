@@ -241,7 +241,7 @@ function InstallAnt() {
 
     # permantently append $folder\bin to PATH
     Write-Host $env:path
-    $new_path =  $env:Path + ";" + ant_path
+    $new_path =  $env:Path + ";" + $ant_path
     Write-Host $new_path
     # set user env var path with $new_path
     [Environment]::SetEnvironmentVariable("Path", $new_path, "user")

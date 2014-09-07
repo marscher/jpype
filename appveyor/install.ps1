@@ -252,12 +252,12 @@ function InstallAnt() {
     #$env:path = $foo
     #cd C:
     #dir $ant_path
-    RunCommand "ant" "--version"
+    RunCommand "cmd" "/c echo %path%"
 }
 
 function main () {
-    #InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    #InstallPip $env:PYTHON
+    InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    InstallPip $env:PYTHON
     InstallAnt
 }
 

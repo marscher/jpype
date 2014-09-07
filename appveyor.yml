@@ -34,8 +34,8 @@ install:
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - "powershell ./appveyor/install.ps1"
-  - echo %path%
-  - ant --version
+#  - echo %path%
+#  - ant --version
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart

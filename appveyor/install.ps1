@@ -189,7 +189,7 @@ function unzipAnt($file, $destination) {
     $dir.Copyhere($zip_file.items())
 
     # this should return the only folder name contained in ant.zip
-    $foldername = ""
+    #$foldername = ""
     $zip_file.items() | foreach {
         $foldername = $_.name
         Write-Host "current foldername" $foldername
@@ -234,7 +234,7 @@ function InstallAnt() {
     $folder = unzipAnt $filepath "C:"
     
     if (-not (Test-Path $folder)) {
-        Throw "unpacked folder" $folder "does not exist!"
+        Throw "unpacked folder" + $folder +"does not exist!"
     }
 
     # permantently append $folder\bin to PATH

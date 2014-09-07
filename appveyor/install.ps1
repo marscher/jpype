@@ -239,23 +239,8 @@ function InstallAnt() {
         Throw "unpacked folder" + $ant_path +"does not exist!"
     }
 
-    # permantently append $folder\bin to PATH
-    #Write-Host $env:path
-    $new_path =  $env:Path + ";" + $ant_path
-    #Write-Host $new_path
-    # set user env var path with $new_path
-    #[Environment]::SetEnvironmentVariable("Path", $new_path, "user")
 
-    #write-host $env:path
-    #$foo= [Environment]::GetEnvironmentVariable("path", "user")
-    #write-host $foo
-    #$env:path = $foo
-    #cd C:
-    #dir $ant_path
-    
-    # use setx to set new path
-    $args = "/c setx /m PATH " + $new_path
-    RunCommand "cmd" $args
+    mklink C:\ant-bin $ant_path
 }
 
 function main () {

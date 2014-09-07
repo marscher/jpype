@@ -234,7 +234,8 @@ $url="https://raw.githubusercontent.com/apache/ant/master/bootstrap.bat"
 $filepath = "bootstrap.bat"
 $webclient.DownloadFile($url, $filepath)
 #RunCommand "cmd.exe" $filepath
-start-process "cmd.exe" "/c " + $filepath
+$args = "/c " + $filepath
+start-process "cmd.exe" $args
 }
 
 function InstallAnt_broken() {

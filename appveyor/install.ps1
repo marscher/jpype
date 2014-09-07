@@ -248,7 +248,7 @@ function InstallAnt() {
 
     cd C:
     dir $ant_path
-    ant --version
+    ant.bat --version
 }
 
 function main () {

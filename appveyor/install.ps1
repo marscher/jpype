@@ -239,9 +239,8 @@ function InstallAnt() {
         Throw "unpacked folder" + $ant_path +"does not exist!"
     }
 
+    # create link to default ant binary dir, so we can rely on it.
     cmd.exe /c mklink /d C:\ant-bin $ant_path
-    dir C:\ant-bin
-    Throw "wanted failure"
 }
 
 function main () {

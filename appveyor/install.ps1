@@ -172,46 +172,75 @@ function InstallMinicondaPip ($python_home) {
     }
 }
 
-function ExpandZIPFile($file, $destination) {
+function unzipAnt($file, $destination) {
     if (-Not (Test-Path $file)) {
         Write-Host "File " $file "does not exist!"
         return
     }
+    
+    if (-Not (Test-Path $destination)) {
+        mkdir $destination
+    }
+
     Write-Host "extract " $file " to " $destination
     $shell_app = new-object -com shell.application
     $zip_file = $shell_app.namespace($file)
-    $destination = $shell_app.namespace($destination)
-    $destination.Copyhere($zip_file.items())
+    $dir = $shell_app.namespace($destination)
+    $dir.Copyhere($zip_file.items())
+
+    # this should return the only folder name contained in ant.zip
+    $foldername = ""
+    $zip_file.items() | foreach { 
+        $foldername = $_.name
+    }
+    return $foldername
 }
 
-function unzip($filename) { 
-    if (!(test-path $filename))
-    { throw "$filename does not exist" }
-    $shell = new-object -com shell.application
-    $shell.namespace($pwd.path).copyhere($shell.namespace((join-path $pwd $filename)).items()) }
+function DownloadAnt() {
+    $url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
+    $webclient = New-Object System.Net.WebClient
+    $filepath = "ant.zip"
+	
+	if (Test-Path $filepath) {
+        Write-Host "Reusing" $filepath
+        return $filepath
+    }
+	
+	# Download and retry up to 3 times in case of network transient errors.
+    Write-Host "Downloading" $filename "from" $url
+    $retry_attempts = 2
+    for($i=0; $i -lt $retry_attempts; $i++){
+        try {
+            $webclient.DownloadFile($url, $filepath)
+            break
+        }
+        Catch [Exception]{
+            Start-Sleep 1
+        }
+   }
+   if (Test-Path $filepath) {
+       Write-Host "File saved at" $filepath
+   } else {
+       # Retry once to get the error message if any at the last try
+       $webclient.DownloadFile($url, $filepath)
+   }
+   return $filepath
+}
 
 function InstallAnt() {
-    $ant_url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
-    $webclient = New-Object System.Net.WebClient
+    $filepath = DownloadAnt
+    # extract to C: (will result in something like C:\apache-ant-1.9.4
+    $folder = unzipAnt $filepath "C:"
 
-    $filepath = "C:\ant.zip"
-    $dest = "C:\ant"
+    # permantently append $folder\bin to PATH
+    Write-Host $env:path
+    $new_path =  $env:Path + ";C:\" + $folder + "\bin;"
+    Write-Host $new_path
+    # set user env var path with $new_path
+    [Environment]::SetEnvironmentVariable("Path", $new_path, "user" )
 
-    Write-Host "downloading ant"
-    $webclient.DownloadFile($ant_url, $filepath)
-
-    if (-Not (Test-Path $filepath)) {
-        Write-Host "download of ant failed"
-        Exit 1
-    }
-
-    #ExpandZIPFile -file $filepath -destination $dest
-    mkdir $dest
-    cd $dest
-    unzip $filepath
-
-    # permantently append $dest\bin to PATH
-    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )
+    cd C:
+    ant --version
 }
 
 function main () {

@@ -190,8 +190,9 @@ function unzipAnt($file, $destination) {
 
     # this should return the only folder name contained in ant.zip
     $foldername = ""
-    $zip_file.items() | foreach { 
+    $zip_file.items() | foreach {
         $foldername = $_.name
+        Write-Host "current foldername" $foldername
     }
     return $foldername
 }
@@ -231,21 +232,25 @@ function InstallAnt() {
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
     $folder = unzipAnt $filepath "C:"
+    
+    if (-not Test-Path $folder) {
+        Throw "unpacked folder" $folder "does not exist!"
+    }
 
     # permantently append $folder\bin to PATH
     Write-Host $env:path
     $new_path =  $env:Path + ";C:\" + $folder + "\bin;"
     Write-Host $new_path
     # set user env var path with $new_path
-    [Environment]::SetEnvironmentVariable("Path", $new_path, "user" )
+    [Environment]::SetEnvironmentVariable("Path", $new_path, "user")
 
     cd C:
     ant --version
 }
 
 function main () {
-    InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPip $env:PYTHON
+    #InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    #InstallPip $env:PYTHON
     InstallAnt
 }
 

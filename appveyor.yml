@@ -23,7 +23,6 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
-  - echo %path%
   - set PATH=%PATH%;C:\ant-bin\
   - echo %path%
   - ECHO "Filesystem root:"

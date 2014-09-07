@@ -200,7 +200,7 @@ function unzipAnt($file, $destination) {
 function DownloadAnt() {
     $url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
     $webclient = New-Object System.Net.WebClient
-    $filepath = "ant.zip"
+    $filepath = "C:\ant.zip"
 	
 	if (Test-Path $filepath) {
         Write-Host "Reusing" $filepath

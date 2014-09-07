@@ -24,7 +24,7 @@ environment:
 
 install:
   - echo %path%
-  - set PATH="%PATH%;C:\ant-bin\"
+  - set PATH=%PATH%;C:\ant-bin\
   - echo %path%
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""

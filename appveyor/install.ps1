@@ -246,13 +246,13 @@ function InstallAnt() {
     # set user env var path with $new_path
     [Environment]::SetEnvironmentVariable("Path", $new_path, "user")
 
-    write-host $env:path
-    $foo= [Environment]::GetEnvironmentVariable("path", "user")
-    write-host $foo
-    $env:path = $foo
+    #write-host $env:path
+    #$foo= [Environment]::GetEnvironmentVariable("path", "user")
+    #write-host $foo
+    #$env:path = $foo
     #cd C:
     #dir $ant_path
-    ant.bat --version
+    RunCommand "ant.bat" "--version"
 }
 
 function main () {

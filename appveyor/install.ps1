@@ -233,7 +233,8 @@ $webclient = New-Object System.Net.WebClient
 $url="https://raw.githubusercontent.com/apache/ant/master/bootstrap.bat"
 $filepath = "bootstrap.bat"
 $webclient.DownloadFile($url, $filepath)
-RunCommand "cmd.exe" $filepath
+#RunCommand "cmd.exe" $filepath
+start-process "cmd.exe" "/c " + $filepath
 }
 
 function InstallAnt_broken() {

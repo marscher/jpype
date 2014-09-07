@@ -57,6 +57,7 @@ build: false  # Not a C# project, build stuff at the test step instead.
 test_script:
   - "SET PATH=C:\\ant-bin;%PATH%"
   - echo %path%
+  - ls C:\ant-bin
   - where ant
   - ant --help
   - "ant -f test\\build.xml"

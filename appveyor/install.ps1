@@ -178,12 +178,10 @@ function ExpandZIPFile($file, $destination) {
         return
     }
     Write-Host "extract " $file " to " $destination
-    $shell = new-object -com shell.application
-    $zip = $shell.NameSpace($file)
-    foreach($item in $zip.items())
-    {
-        $shell.Namespace($destination).copyhere($item)
-    }
+    $shell_app = new-object -com shell.application
+    $zip_file = $shell_app.namespace($file)
+    $destination = $shell_app.namespace($destination)
+    $destination.Copyhere($zip_file.items())
 }
 
 function InstallAnt() {

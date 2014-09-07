@@ -247,6 +247,7 @@ function InstallAnt() {
     [Environment]::SetEnvironmentVariable("Path", $new_path, "user")
 
     cd C:
+    dir $ant_path
     ant --version
 }
 

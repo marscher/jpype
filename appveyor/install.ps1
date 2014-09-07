@@ -239,7 +239,7 @@ function InstallAnt() {
         Throw "unpacked folder" + $ant_path +"does not exist!"
     }
 
-    cmd.exe /c mklink C:\ant-bin $ant_path
+    cmd.exe /c mklink /d C:\ant-bin $ant_path
     dir C:\ant-bin
     Throw "wanted failure"
 }

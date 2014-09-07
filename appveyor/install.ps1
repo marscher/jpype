@@ -184,6 +184,12 @@ function ExpandZIPFile($file, $destination) {
     $destination.Copyhere($zip_file.items())
 }
 
+function unzip($filename) { 
+    if (!(test-path $filename))
+    { throw "$filename does not exist" }
+    $shell = new-object -com shell.application
+    $shell.namespace($pwd.path).copyhere($shell.namespace((join-path $pwd $filename)).items()) }
+
 function InstallAnt() {
     $ant_url = "http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-1.9.4-bin.zip"
     $webclient = New-Object System.Net.WebClient
@@ -199,7 +205,10 @@ function InstallAnt() {
         Exit 1
     }
 
-    ExpandZIPFile -file $filepath -destination $dest
+    #ExpandZIPFile -file $filepath -destination $dest
+    mkdir $dest
+    cd $dest
+    unzip $filepath
 
     # permantently append $dest\bin to PATH
     [Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $dest + "\bin", [System.EnvironmentVariableTarget]::Machine )

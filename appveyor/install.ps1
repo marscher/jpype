@@ -233,13 +233,15 @@ function InstallAnt() {
     # extract to C: (will result in something like C:\apache-ant-1.9.4
     $folder = unzipAnt $filepath "C:"
     
-    if (-not (Test-Path $folder)) {
-        Throw "unpacked folder" + $folder +"does not exist!"
+    $ant_path  = "C:\" + $folder + "\bin"
+    
+    if (-not (Test-Path $ant_path)) {
+        Throw "unpacked folder" + $ant_path +"does not exist!"
     }
 
     # permantently append $folder\bin to PATH
     Write-Host $env:path
-    $new_path =  $env:Path + ";C:\" + $folder + "\bin;"
+    $new_path =  $env:Path + ";" + ant_path
     Write-Host $new_path
     # set user env var path with $new_path
     [Environment]::SetEnvironmentVariable("Path", $new_path, "user")

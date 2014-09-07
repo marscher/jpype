@@ -240,7 +240,7 @@ function InstallAnt() {
     }
 
     # create link to default ant binary dir, so we can rely on it.
-    cmd.exe /c mklink /d C:\ant-bin $ant_path
+    cmd.exe /c mklink /d C:\ant $folder
 }
 
 function main () {

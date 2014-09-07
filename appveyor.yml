@@ -4,6 +4,7 @@ environment:
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+    ANT_HOME: C:\ant
 
   matrix:
     - PYTHON: "C:\\Python27_32"
@@ -23,8 +24,6 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
-  - set PATH=%PATH%;C:\ant-bin\
-  - echo %path%
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 
@@ -34,8 +33,6 @@ install:
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - "powershell ./appveyor/install.ps1"
-#  - echo %path%
-#  - ant --version
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart

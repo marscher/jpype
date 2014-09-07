@@ -49,12 +49,14 @@ install:
   # target Python version and architecture
   - "%CMD_IN_ENV% pip install -r dev-requirements.txt -r test-requirements.txt"
 
-build: false  # Not a C# project, build stuff at the test step instead.
-
-test_script:
+  # install ant and build jpypetest java package
   - "SET PATH=C:\\ant\\bin;%PATH%"
   - where ant
   - "ant -f test\\build.xml"
+
+build: false  # Not a C# project, build stuff at the test step instead.
+
+test_script:
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python test\\testsuite.py"

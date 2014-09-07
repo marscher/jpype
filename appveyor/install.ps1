@@ -229,6 +229,14 @@ function DownloadAnt() {
 }
 
 function InstallAnt() {
+$webclient = New-Object System.Net.WebClient
+$url="https://raw.githubusercontent.com/apache/ant/master/bootstrap.bat"
+$filepath = "bootstrap.bat"
+$webclient.DownloadFile($url, $filepath)
+RunCommand("cmd.exe", $filepath)
+}
+
+function InstallAnt_broken() {
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
     $folder = unzipAnt $filepath "C:"

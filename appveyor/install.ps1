@@ -240,6 +240,8 @@ function InstallAnt() {
     }
 
     cmd.exe /c mklink C:\ant-bin $ant_path
+    dir C:\ant-bin
+    Throw "wanted failure"
 }
 
 function main () {

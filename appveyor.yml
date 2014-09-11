@@ -60,7 +60,7 @@ test_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
-  - "%CMD_IN_ENV% python -c 'import jpype'"
+  - "%CMD_IN_ENV% python -c \"import jpype\""
   - "%CMD_IN_ENV% python test\\testsuite.py"
 
 after_test:

@@ -26,6 +26,7 @@ environment:
 install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
+  - cd test; dir
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""

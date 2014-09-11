@@ -26,7 +26,6 @@ environment:
 install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
-  - cd test; dir
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
@@ -62,7 +61,7 @@ test_script:
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python -c \"import jpype\""
-  - "%CMD_IN_ENV% python test\\testsuite.py"
+  - cd test; "%CMD_IN_ENV% python test\\testsuite.py"
 
 after_test:
   # If tests are successful, create a whl package for the project.

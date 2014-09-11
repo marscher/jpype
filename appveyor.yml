@@ -61,7 +61,7 @@ test_script:
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python -c \"import jpype\""
-  - "%CMD_IN_ENV% cd test; python test\\testsuite.py"
+  - "%CMD_IN_ENV% dir; cd test; python testsuite.py"
 
 after_test:
   # If tests are successful, create a whl package for the project.

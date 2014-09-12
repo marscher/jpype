@@ -59,6 +59,7 @@ build: false  # Not a C# project, build stuff at the test step instead.
 test_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # Build the compiled extension and run the project tests
+  - SET JAVA_HOME=
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python -c \"import jpype\""
   - "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py"

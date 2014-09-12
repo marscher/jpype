@@ -35,15 +35,15 @@ fallback_jni = os.path.join('src', 'native', 'jni_include')
 
 # try to include JNI first from eventually given JAVA_HOME, then from distributed
 java_home = os.getenv('JAVA_HOME')
-if java_home:
+if os.path.exists(java_home):
     platform_specific['include_dirs'] += [os.path.join(java_home, 'include')]
     
     # check if jni.h can be found
-    found = False
+    found_jni = False
     for d in platform_specific['include_dirs']:
         if os.path.exists(os.path.join(d, 'jni.h')):
-            found = True
-    if not found:
+            found_jni = True
+    if not found_jni:
         import warnings
         warnings.warn('Falling back to provided JNI headers, since your provided'
                       ' JAVA_HOME %s does not provide jni.h' % java_home)
@@ -56,7 +56,7 @@ if sys.platform == 'win32':
     platform_specific['libraries'] = ['Advapi32']
     platform_specific['define_macros'] = [('WIN32', 1)]
     platform_specific['extra_compile_args'] = ['/EHsc']
-    if java_home:
+    if found_jni:
         platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'win32')]
         # TODO: investigate if this is really neccessary, since it will fail if java_home is None
         platform_specific['library_dir'] = [os.path.join(java_home, 'lib')]
@@ -67,11 +67,11 @@ elif sys.platform == 'darwin':
     # distutils/extension.py:133: UserWarning: Unknown Extension options: 'library_dir'
     #platform_specific['library_dir'] = [os.path.join(java_home, 'Libraries')]
     platform_specific['define_macros'] = [('MACOSX', 1)]
-    if java_home:
+    if found_jni:
         platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'darwin')]
-else: # linux
+else: # linux etc.
     platform_specific['libraries'] = ['dl']
-    if java_home:
+    if found_jni:
         platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'linux')]
  
 
@@ -131,6 +131,6 @@ setup(
         'jpypex': 'src/python/jpypex',
     },
     cmdclass={'build_ext': my_build_ext},
-    #zip_safe=False,
+    zip_safe=False,
     ext_modules=[jpypeLib],
 )

@@ -52,8 +52,6 @@ typedef int16_t  jshort;   /* signed 16 bits */
 #endif
 
 // define jlong
-#include <cassert>
-assert(sizeof(long) == sizeof(int64_t))
 #ifdef _LP64 /* 64-bit build */
     typedef int64_t  jlong;    /* signed 64 bits */
 //    typedef long jlong;

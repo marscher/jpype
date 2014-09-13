@@ -45,10 +45,18 @@ typedef uint8_t  jboolean; /* unsigned 8 bits */
 typedef int8_t   jbyte;    /* signed 8 bits */
 typedef uint16_t jchar;    /* unsigned 16 bits */
 typedef int16_t  jshort;   /* signed 16 bits */
-typedef int32_t  jint;     /* signed 32 bits */
-//typedef int64_t  jlong;    /* signed 64 bits */
-#ifdef _LP64 /* 64-bit Solaris */
-    typedef long jlong;
+#if defined(_WIN32)
+    typedef long jint;
+#else
+    typedef int32_t  jint;     /* signed 32 bits */
+#endif
+
+// define jlong
+#include <cassert>
+assert(sizeof(long) == sizeof(int64_t))
+#ifdef _LP64 /* 64-bit build */
+    typedef int64_t  jlong;    /* signed 64 bits */
+//    typedef long jlong;
 #else
     typedef long long jlong;
 #endif
@@ -66,9 +74,6 @@ typedef jint     jsize;
     #define JNIEXPORT __declspec(dllexport)
     #define JNIIMPORT __declspec(dllimport)
     #define JNICALL __stdcall
-
-    typedef long jint;
-    typedef int64_t jlong;
 #elif (defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4) && (__GNUC_MINOR__ > 2))) || __has_attribute(visibility)
     #define JNIEXPORT     __attribute__((visibility("default")))
     #define JNIIMPORT     __attribute__((visibility("default")))

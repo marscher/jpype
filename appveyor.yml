@@ -24,8 +24,6 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
-  - dir "C:\Program Files\Java\"
-  - exit 1
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 

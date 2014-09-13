@@ -244,8 +244,10 @@ function InstallAnt() {
 }
 
 function main () {
-    InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPip $env:PYTHON
+    #InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    #InstallPip $env:PYTHON
+    InstallMinicondaPip $env:PYTHON
     InstallAnt
 }
 

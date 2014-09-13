@@ -55,14 +55,13 @@ if os.path.exists(java_home):
 else:
     platform_specific['include_dirs'] += [fallback_jni]
 
-if sys.platform == 'win32':
+if sys.platform == 'win32': 
     platform_specific['libraries'] = ['Advapi32']
     platform_specific['define_macros'] = [('WIN32', 1)]
+    # TODO: these flags are only valid, if compiling with visual c++. Fails on mingw, etc.
     platform_specific['extra_compile_args'] = ['/EHsc']
     if found_jni:
         platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'win32')]
-        # TODO: investigate if this is really neccessary, since it will fail if java_home is None
-        platform_specific['library_dir'] = [os.path.join(java_home, 'lib')]
 
 elif sys.platform == 'darwin':
     platform_specific['libraries'] = ['dl']

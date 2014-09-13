@@ -44,6 +44,8 @@ if os.path.exists(java_home):
     for d in platform_specific['include_dirs']:
         if os.path.exists(os.path.join(d, 'jni.h')):
             found_jni = True
+            break
+
     if not found_jni:
         import warnings
         warnings.warn('Falling back to provided JNI headers, since your provided'

@@ -61,6 +61,7 @@ test_script:
   # Build the compiled extension and run the project tests
   - "SET JAVA_HOME="
   - echo %JAVA_HOME%
+  - "%CMD_IN_ENV% python setup.py build_ext -DTRACING=1"
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python -c \"import jpype; jpype.startJVM(jpype.getDefaultJVMPath())\""
   - "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py"

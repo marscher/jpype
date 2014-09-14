@@ -48,9 +48,13 @@ private :
 	}
 
 public :
+	public Win32PlatformAdapter() : jvmLibrary(NULL) {}
+
 	virtual void loadLibrary(const char* path)
 	{
+//	    try {
 		jvmLibrary = LoadLibrary(path);
+//	    } catch(...) {}
 		if (jvmLibrary == NULL)
 		{
 			std::stringstream msg;
@@ -72,7 +76,7 @@ public :
 		{
 			std::stringstream msg;
 			msg << "Unable to load symbol [" << name << "], error = " << formatMessage(GetLastError());
-			RAISE(JPypeException, msg.str().c_str());
+			RAISE(JPypeException, msg.str());
 		}
 		return res;
 	}

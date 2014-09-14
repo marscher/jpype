@@ -55,7 +55,7 @@ if os.path.exists(java_home):
 else:
     platform_specific['include_dirs'] += [fallback_jni]
 
-if sys.platform == 'win32': 
+if sys.platform == 'win32':
     platform_specific['libraries'] = ['Advapi32']
     platform_specific['define_macros'] = [('WIN32', 1)]
     if found_jni:
@@ -114,10 +114,10 @@ class my_build_ext(build_ext):
         c = self.compiler.compiler_type
         if self.copt.has_key(c):
            for e in self.extensions:
-               e.extra_compile_args = copt[ c ]
+               e.extra_compile_args = self.copt[ c ]
         if self.lopt.has_key(c):
             for e in self.extensions:
-                e.extra_link_args = lopt[ c ]
+                e.extra_link_args = self.lopt[ c ]
         build_ext.build_extensions(self)
         
 setup(

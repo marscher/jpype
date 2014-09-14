@@ -48,7 +48,7 @@ private :
 	}
 
 public :
-	public Win32PlatformAdapter() : jvmLibrary(NULL) {}
+	Win32PlatformAdapter() : jvmLibrary(NULL) {}
 
 	virtual void loadLibrary(const char* path)
 	{

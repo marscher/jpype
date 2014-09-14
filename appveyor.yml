@@ -7,13 +7,13 @@ environment:
     ANT_HOME: C:\ant
 
   matrix:
-    - PYTHON: "C:\\Python27_32"
-      PYTHON_VERSION: "2.7.8"
-      PYTHON_ARCH: "32"
-
-#    - PYTHON: "C:\\Python27_64"
+#    - PYTHON: "C:\\Python27_32"
 #      PYTHON_VERSION: "2.7.8"
-#      PYTHON_ARCH: "64"
+#      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python27_64"
+      PYTHON_VERSION: "2.7.8"
+      PYTHON_ARCH: "64"
 
 #    - PYTHON: "C:\\Python34_32"
 #      PYTHON_VERSION: "3.4.1"
@@ -61,7 +61,7 @@ test_script:
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% python -c \"import jpype\""
-  - "%CMD_IN_ENV% python -vvv C:\\projects\\jpype\\test\\testsuite.py"
+  - "%CMD_IN_ENV% python  C:\\projects\\jpype\\test\\testsuite.py"
   #- "cd test && dir && %CMD_IN_ENV% python testsuite.py"
   #- "%CMD_IN_ENV% dir; cd test; python testsuite.py"
 

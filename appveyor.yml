@@ -53,7 +53,10 @@ test_script:
   # run testsuite and upload test results to AppVeyor; return exit code of testsuite
   - ps: "python C:/projects/jpype/test/testsuite.py --xml; $success = $?; \
     $wc = New-Object 'System.Net.WebClient'; \
-    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", (Resolve-Path *.xml)); \
+    $files = (Resolve-Path *.xml); \
+    Write-Host $files ; \
+    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", $files); \
+    $success = 0;
     exit $success"
 
 after_test:

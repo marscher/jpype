@@ -54,8 +54,8 @@ test_script:
   - ps: "python C:/projects/jpype/test/testsuite.py --xml; $success = $?; \
     $wc = New-Object 'System.Net.WebClient'; \
     $files = (Resolve-Path *.xml); \
-    Write-Host $files ; \
-    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", $files); \
+    $result= $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", $files); \
+    Write-Host $result;
     $success = 0;
     exit $success"
 

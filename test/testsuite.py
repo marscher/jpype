@@ -22,21 +22,38 @@ import pkgutil
 import sys
 
 def suite() :
-    loader = unittest.defaultTestLoader
-    if len(sys.argv) > 1:
-        names = sys.argv[1:]
-        test_suite = loader.loadTestsFromNames(names)
-    else:
+    def names_from_argv():
+        if len(sys.argv) > 1:
+            names = [n for n in sys.argv[1:] if not n.startswith('-')]
+            return names
+        else:
+            return []
+    def names_from_module():
         import jpypetest
         pkgpath = os.path.dirname(jpypetest.__file__)
         names = ["jpypetest.%s" % name for _, name,
                  _ in pkgutil.iter_modules([pkgpath])]
-        print names
-        test_suite = loader.loadTestsFromNames(names)
+        return names
+    
+    names = names_from_argv()
+    if len(names) == 0:
+        names = names_from_module()
+        
+    loader = unittest.defaultTestLoader
+    test_suite = loader.loadTestsFromNames(names)
     return test_suite
 
 def runTest() :
-    runner = unittest.TextTestRunner()
+    runner = None
+    if '--xml' in sys.argv:
+        try:
+            from xmlrunner import XMLTestRunner
+            runner = XMLTestRunner()
+        except ImportError:
+            pass
+    else:
+        runner = unittest.TextTestRunner()
+
     result = runner.run(suite())
 
     if jpype.isJVMStarted():

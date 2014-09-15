@@ -24,6 +24,7 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
+  - ps: "%CMD_IN_ENV% ls"
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 
@@ -59,8 +60,8 @@ install:
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  # upload test results to AppVeyor
-  - ps: "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py --xml \
+  # run testsuite and upload test results to AppVeyor
+  - ps: "%CMD_IN_ENV% python C:/projects/jpype/test/testsuite.py --xml; \
     $wc = New-Object 'System.Net.WebClient'; \
     $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", (Resolve-Path Test*.xml))"
 

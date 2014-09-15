@@ -44,10 +44,11 @@ install:
   - "%CMD_IN_ENV% pip install wheel"
   - "%CMD_IN_ENV% pip install -r test-requirements.txt" # -r dev-requirements.txt
 
-build:
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"
+build: false # Not a C# project, build stuff at the test step instead.
+
 test_script:
   # run testsuite and upload test results to AppVeyor; return exit code of testsuite
   - ps: "python C:/projects/jpype/test/testsuite.py --xml; $success = $?; \

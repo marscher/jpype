@@ -53,20 +53,17 @@ install:
   - "SET PATH=C:\\ant\\bin;%PATH%"
   - where ant
   - "ant -f test\\build.xml"
+  # Build the compiled extension and run the project tests
+  - "%CMD_IN_ENV% python setup.py install"
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  # Build the compiled extension and run the project tests
-  - "SET JAVA_HOME="
-  - echo %JAVA_HOME%
-  #- "%CMD_IN_ENV% python setup.py build_ext -DTRACING=1"
-  - "%CMD_IN_ENV% python setup.py install"
-  - "%CMD_IN_ENV% python -c \"import jpype; jpype.startJVM(jpype.getDefaultJVMPath())\""
-  - "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py"
-  #- "cd test && dir && %CMD_IN_ENV% python testsuite.py"
-  #- "%CMD_IN_ENV% dir; cd test; python testsuite.py"
+  #- "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py --xml"
+  # upload test results to AppVeyor
+  - ps: "$wc = New-Object 'System.Net.WebClient';
+    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", (Resolve-Path Test*.xml))"
 
 after_test:
   # If tests are successful, create a whl package for the project.

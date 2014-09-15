@@ -54,9 +54,10 @@ build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
   # run testsuite and upload test results to AppVeyor
-  - ps: "python C:/projects/jpype/test/testsuite.py --xml; ls *.xml; \
+  - ps: "python C:/projects/jpype/test/testsuite.py --xml; $success = $?; ls *.xml; \
     $wc = New-Object 'System.Net.WebClient'; \
-    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", (Resolve-Path Test*.xml))"
+    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", (Resolve-Path Test*.xml)); \
+    exit $success"
 
 after_test:
   # If tests are successful, create a whl package for the project.

@@ -59,10 +59,9 @@ install:
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  #- "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py --xml"
   # upload test results to AppVeyor
-  - ps: "$wc = New-Object 'System.Net.WebClient';
+  - ps: "%CMD_IN_ENV% python C:\\projects\\jpype\\test\\testsuite.py --xml \
+    $wc = New-Object 'System.Net.WebClient'; \
     $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", (Resolve-Path Test*.xml))"
 
 after_test:

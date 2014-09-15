@@ -24,7 +24,7 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
-  - ps: "%CMD_IN_ENV% ls"
+  - ps: "$env:CMD_IN_ENV ls"
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 

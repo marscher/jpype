@@ -27,7 +27,6 @@ install:
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - "powershell ./appveyor/install.ps1"
-  - "%CMD_IN_ENV% pip install -U setuptools wheel"
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
@@ -42,11 +41,11 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
+  - "%CMD_IN_ENV% pip install -U setuptools wheel"
   - "%CMD_IN_ENV% pip install -r test-requirements.txt" # -r dev-requirements.txt
 
   # install ant and build jpypetest java package
   - "SET PATH=C:\\ant\\bin;%PATH%"
-  - where ant
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install"

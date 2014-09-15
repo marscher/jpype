@@ -24,7 +24,8 @@ environment:
 #      PYTHON_ARCH: "64"
 
 install:
-  - ps: "$env:CMD_IN_ENV java -version"
+  - ps: "Host-Write $env:CMD_IN_ENV"
+  - ps: "& $env:CMD_IN_ENV java -version"
 
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.

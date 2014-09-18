@@ -24,14 +24,18 @@ function run {
     $stylesheet = "C:/projects/jpype/test/transform_xunit_to_appveyor.xsl";
     $output = "C:/projects/jpype/test/transformed.xml"
     
-    python testsuite.py --xml; $success = $?;
+    python C:/projects/jpype/test/testsuite.py --xml;
+    $success = $?;
     
     $input = (Resolve-Path *.xml);
 
     xslt_transform $input $stylesheet $output
     
-    Get-Content -path 'transformed.xml';
+    Get-Content -path $output;
     
+    upload $output
+    
+    # return exit code of testsuite
     exit $success
 }
 

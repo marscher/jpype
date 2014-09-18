@@ -17,8 +17,7 @@ function upload($file) {
     }
 
     $wc = New-Object 'System.Net.WebClient';
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/"
-        "xunit/$($env:APPVEYOR_JOB_ID)", $file); 
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", $file); 
 }
 
 function run {

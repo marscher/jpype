@@ -51,7 +51,8 @@ build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:
   # run testsuite and upload test results to AppVeyor; return exit code of testsuite
-  - ps: "python C:/projects/jpype/test/testsuite.py --xml; $success = $?; \
+  - ps: "cd C:/projects/jpype; \
+    python test/testsuite.py --xml; $success = $?; \
     $wc = New-Object 'System.Net.WebClient'; \
     $files = (Resolve-Path *.xml); \
     $xslt = New-Object System.Xml.Xsl.XslCompiledTransform; \

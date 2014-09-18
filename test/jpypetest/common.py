@@ -26,6 +26,7 @@ class JPypeTestCase(unittest.TestCase) :
         if not jpype.isJVMStarted():
             root = path.dirname(path.abspath(path.dirname(__file__)))
             jvm_path = jpype.getDefaultJVMPath()
+            assert path.exists(jvm_path), "no valid jvm path"
             print "Running testsuite using JVM", jvm_path
             classpath_arg = "-Djava.class.path=%s"
             classpath_arg %= path.join(root, 'classes')

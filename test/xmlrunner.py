@@ -7,7 +7,7 @@ XML Test Runner for PyUnit
 # Written by Sebastian Rittau <srittau@jroger.in-berlin.de> and placed in
 # the Public Domain. With contributions by Paolo Borelli and others.
 
-from __future__ import unicode_literals
+##from __future__ import unicode_literals
 
 __version__ = "0.3"
 

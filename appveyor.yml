@@ -54,9 +54,10 @@ test_script:
   - ps: "python C:/projects/jpype/test/testsuite.py --xml; $success = $?; \
     $wc = New-Object 'System.Net.WebClient'; \
     $files = (Resolve-Path *.xml); \
-    $result= $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", $files); \
-    Write-Host $result;
-    $success = 0;
+    $xslt = New-Object System.Xml.Xsl.XslCompiledTransform; \
+    $xslt.Load("test.xslt"); \
+    $xslt.Transform($files, "transformed.xml"); \
+    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", "transformed.xml"); \
     exit $success"
 
 after_test:

@@ -55,9 +55,9 @@ test_script:
     $wc = New-Object 'System.Net.WebClient'; \
     $files = (Resolve-Path *.xml); \
     $xslt = New-Object System.Xml.Xsl.XslCompiledTransform; \
-    $xslt.Load("test.xslt"); \
-    $xslt.Transform($files, "transformed.xml"); \
-    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", "transformed.xml"); \
+    $xslt.Load('test.xslt'); \
+    $xslt.Transform($files, 'transformed.xml'); \
+    $wc.UploadFile(\"https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)\", 'transformed.xml'); \
     exit $success"
 
 after_test:

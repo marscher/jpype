@@ -82,7 +82,7 @@ Child   Introduced  Value
                     </xsl:when>
                     <xsl:when test="skipped">
                     <reason>
-                    <xsl:value-of select="skip"></xsl:value-of>
+                        <xsl:value-of select="skipped"></xsl:value-of>
                     </reason>
                     </xsl:when>
                     <xsl:otherwise>Pass</xsl:otherwise>

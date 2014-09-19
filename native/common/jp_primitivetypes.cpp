@@ -61,19 +61,21 @@ HostRef* JPByteType::asHostObjectFromObject(jvalue val)
 
 EMatchType JPByteType::canConvertToJava(HostRef* obj)
 {
-	JPCleaner cleaner;
 	if (JPEnv::getHost()->isNone(obj))
 	{
+		cout << "can convert: none" << endl;
 		return _none;
 	}
 
 	if (JPEnv::getHost()->isInt(obj))
 	{
+		cout << "can convert: int" << endl;
 		return _implicit;
 	}
 
 	if (JPEnv::getHost()->isLong(obj))
 	{
+		cout << "can convert: long" << endl;
 		return _implicit;
 	}
 
@@ -82,6 +84,7 @@ EMatchType JPByteType::canConvertToJava(HostRef* obj)
 		JPTypeName name = JPEnv::getHost()->getWrapperTypeName(obj);
 		if (name.getType() == JPTypeName::_byte)
 		{
+			cout << "can convert: exact" << endl;
 			return _exact;
 		}
 	}

@@ -19,7 +19,7 @@
 
 enum EMatchType
 {
-	_none,
+	_none = 0,
 	_explicit,
 	_implicit,
 	_exact

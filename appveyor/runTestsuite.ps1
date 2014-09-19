@@ -26,6 +26,7 @@ function run {
     
     nosetests test/jpypetest --all-modules --with-xunit
     $success = $?;
+    Write-Host "result code of nosetests:" $success
     
     $input = "C:/projects/jpype/nosetests.xml";
 

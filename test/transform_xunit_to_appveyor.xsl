@@ -65,15 +65,9 @@ Author: Martin Scherer <m.scherer@fu-berlin.de>
             </xsl:attribute>
               <xsl:variable name="result">
                 <xsl:choose>
-                  <xsl:when test="error or failure">
-                    Fail
-                  </xsl:when>
-                  <xsl:when test="skipped">
-                    Skip
-                  </xsl:when>
-                  <xsl:otherwise>
-                    Pass
-                  </xsl:otherwise>
+                  <xsl:when test="error or failure">Fail</xsl:when>
+                  <xsl:when test="skipped">Skip</xsl:when>
+                  <xsl:otherwise>Pass</xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <xsl:attribute name="result">

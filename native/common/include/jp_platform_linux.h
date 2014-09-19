@@ -30,6 +30,8 @@ private :
 	void* jvmLibrary;
 
 public :
+	LinuxPlatformAdapter() : jvmLibrary(NULL) {}
+
 	virtual void loadLibrary(const char* path)
 	{
 #if defined(_HPUX) && !defined(_IA64)

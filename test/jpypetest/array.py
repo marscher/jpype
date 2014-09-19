@@ -172,7 +172,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         jarr = jpype.JArray(jpype.JDouble)(self.VALUES)
         self.assertItemsEqual(self.VALUES, jarr)
         result = jarr[:]
-        self.assertItemsEqual(self.VALUES, result)
+        self.assertItemsEqual(self.VALUES[:], result)
         
         result = jarr[2:10]
         

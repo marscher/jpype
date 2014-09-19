@@ -1,10 +1,35 @@
+<!--
+This xslt stylesheet transforms (JUnit) xunit xml output to xunit.net xml, which
+is eg. used at AppVeyor CI.
+
+See for reference:
+https://xunit.codeplex.com/wikipage?title=XmlFormat
+
+tested with saxon and xsltproc against output of nosetests &#8211;&#8211; with-xml (Python)
+
+Author: Martin Scherer <m.scherer@fu-berlin.de>
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<!-- The "root" or "main" template -->
-<xsl:key name="class" match="/testsuite/testcase/@classname" use="." />
 <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
-<xsl:template match="testsuite">
+<!-- xunit.net handles failures and errors the same -->
+<xsl:template name="generic_error" match="failure|error">
+    <xsl:attribute name="exception-type">
+        <xsl:value-of select="@type"/>
+    </xsl:attribute>
 
+    <message>
+       <xsl:value-of select="./@message"/>
+    </message>
+    
+    <stackttrace>
+       <xsl:value-of select="."/>
+    </stackttrace>
+</xsl:template>
+
+<xsl:key name="class" match="/testsuite/testcase/@classname" use="." />
+
+<xsl:template match="testsuite">
 <assembly name="python">
 <xsl:attribute name="total">
   <xsl:value-of select="@tests"></xsl:value-of>
@@ -33,56 +58,35 @@
     
     <!-- select only those testcases, which match the current classname -->
     <xsl:for-each select="/testsuite/testcase[@classname=$className]">
-    <!-- 
-    The test node contains information about a single test execution.
-
-Attribute   Introduced  Value
-name    1.0     The display name of the test
-type    1.0     The full type name of the class
-method  1.0     The name of the method
-result  1.0     One of "Pass", "Fail", or "Skip"
-time    1.0     The time, in fractional seconds, spent running the test (not present for "Skip" results)
-
-
-Child   Introduced  Value
-<failure>   1.0     [0..1] Present if the test result is "Fail"
-<reason>    1.0     [0..1] Present if the test result is "Skip"
-<traits>    1.0     [0..1] Present if the test has any trait metadata
-<output>    1.1     [0..1] Contains any text written to Console.Out or Console.Error (in CDATA until 1.2)  -->
-	    <test>
-	        <xsl:attribute name="name">
-	            <xsl:value-of select="@name"></xsl:value-of>
+        <test>
+            <xsl:attribute name="name">
+                <xsl:value-of select="@name"/>
 	        </xsl:attribute>
 	        
 	        <xsl:attribute name="time">
-                <xsl:value-of select="@time"></xsl:value-of>
+                <xsl:value-of select="@time"/>
             </xsl:attribute>
 	        
 	        <xsl:variable name="result">
 	           <xsl:choose>
-                    <xsl:when test="error">Fail</xsl:when>
+                    <xsl:when test="error or failure">Fail</xsl:when>
                     <xsl:when test="skipped">Skip</xsl:when>
                     <xsl:otherwise>Pass</xsl:otherwise>
                </xsl:choose>
-	        </xsl:variable>
-	        <xsl:attribute name="result">
-		       <xsl:value-of select="$result"></xsl:value-of>
-	        </xsl:attribute>
-	        
-	        <xsl:choose>
-                    <xsl:when test="error">
-	                    <failure>
-	                        <xsl:attribute name="exception-type">
-	                            <xsl:value-of select="error/@type"></xsl:value-of>
-	                        </xsl:attribute>
-	                        <message>
-	                           <xsl:value-of select="error"></xsl:value-of>
-	                        </message>
-	                    </failure>
+            </xsl:variable>
+            <xsl:attribute name="result">
+               <xsl:value-of select="$result"/>
+            </xsl:attribute>
+            <xsl:choose>
+                    <xsl:when test="error or failure">
+                    <failure>
+                          <xsl:apply-templates name="generic_error"/>
+                          </failure>
                     </xsl:when>
+                    
                     <xsl:when test="skipped">
 	                    <reason>
-	                        <xsl:value-of select="skipped/@message"></xsl:value-of>
+	                        <xsl:value-of select="skipped/@message"/>
 	                    </reason>
                     </xsl:when>
                </xsl:choose>
@@ -92,7 +96,7 @@ Child   Introduced  Value
                     <output><xsl:value-of select="system-out/."/></output>
                </xsl:when>
                </xsl:choose>
-	    </test>
+        </test>
     </xsl:for-each>
  </class>
 </xsl:for-each>

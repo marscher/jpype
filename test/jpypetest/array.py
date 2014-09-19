@@ -116,6 +116,8 @@ class ArrayTestCase(common.JPypeTestCase) :
     def testJArrayConversionChar(self):
         t = JPackage("jpype").array.TestArray()
         v = t.charArray
+        self.assertEqual(v[:], 'avcd')
+        # FIXME: this returns unicode on windows
         self.assertEqual(str(v[:]), 'avcd')
         self.assertEqual(unicode(v[:]), u'avcd')
         

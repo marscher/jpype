@@ -72,6 +72,7 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 	{
 		HostRef* v = val[i];
 		EMatchType matchType = compType->canConvertToJava(v);
+		cout << "matchtype = " << matchType << "; explicit = " << _explicit << endl;
 		if (matchType <= _explicit)
 		{
 			PyObject *o = (PyObject *) v->data();

@@ -244,10 +244,9 @@ function InstallAnt() {
 }
 
 function main () {
-    $j=start-job -scriptblock { InstallAnt }
+    InstallAnt
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallMinicondaPip $env:PYTHON
-    wait-job -id $j.id
 }
 
 main

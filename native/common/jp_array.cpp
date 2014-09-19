@@ -15,6 +15,7 @@
    
 *****************************************************************************/   
 #include <jpype.h>
+#include <Python.h>
 
 JPArray::JPArray(const JPTypeName& name, jarray inst)
 {
@@ -72,7 +73,10 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 		HostRef* v = val[i];
 		if ( compType->canConvertToJava(v)<= _explicit)
 		{
-			RAISE(JPypeException, "Unable to convert.");
+			PyObject *o = (PyObject *) v->data();
+			stringstream ss;
+			ss << "Unable to convert value at index " << i << ": " << PyInt_AsLong(o);
+			RAISE(JPypeException, ss.str());
 		}
 	}	
 			

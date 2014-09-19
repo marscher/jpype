@@ -28,10 +28,6 @@ namespace {
 	TypeMap typeMap;
 	JavaClassMap javaClassMap;
 	JavaArrayClassMap javaArrayClassMap;
-
-//	TypeMap typeMap;
-//	JavaClassMap javaClassMap;
-//	JavaArrayClassMap javaArrayClassMap;
 }
 
 namespace JPTypeManager {

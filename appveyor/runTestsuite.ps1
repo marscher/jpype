@@ -35,7 +35,9 @@ function run {
     upload $output
     
     # return exit code of testsuite
-    exit $success
+    if ( -not $success) {
+        throw "testsuite not successful"
+    }
 }
 
 run

@@ -34,6 +34,11 @@ function run {
 
     upload $output
     
+    
+    Push-AppveyorArtifact $input
+    Push-AppveyorArtifact $output
+    
+    
     # return exit code of testsuite
     if ( -not $success) {
         throw "testsuite not successful"

@@ -37,7 +37,7 @@ vector<HostRef*> JPArray::getRange(int start, int stop)
 {
 	TRACE_IN("JPArray::getRange");
 	JPType* compType = m_Class->getComponentType();
-	TRACE2("Compoennt type", compType->getName().getSimpleName());
+	TRACE2("Component type", compType->getName().getSimpleName());
 	
 	vector<HostRef*> res = compType->getArrayRange(m_Object, start, stop-start);
 	
@@ -72,13 +72,14 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 	for (size_t i = 0; i < plength; i++)
 	{
 		HostRef* v = val[i];
-		PyObject *o = (PyObject *) v->data();
+
 		EMatchType matchType = compType->canConvertToJava(v);
-		cout << "pyval["<< i<<"]: " << PyObject_REPR(o) <<  "; matchtype = " << matchType << endl;
 		if (matchType <= _explicit)
 		{
 			stringstream ss;
-			ss << "Unable to convert value at index " << i << ": " << PyObject_REPR(o);
+			PyObject *o = (PyObject *) v->data();
+			ss << "Unable to convert value at index " << i << ": " << PyObject_REPR(o)
+					<< "; matchtype = " << matchType;
 			RAISE(JPypeException, ss.str());
 		}
 	}	

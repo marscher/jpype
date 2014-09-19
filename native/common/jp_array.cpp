@@ -71,7 +71,8 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 	for (size_t i = 0; i < plength; i++)
 	{
 		HostRef* v = val[i];
-		if ( compType->canConvertToJava(v)<= _explicit)
+		EMatchType matchType = compType->canConvertToJava(v);
+		if (matchType <= _explicit)
 		{
 			PyObject *o = (PyObject *) v->data();
 			stringstream ss;

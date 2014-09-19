@@ -13,13 +13,13 @@ Author: Martin Scherer <m.scherer@fu-berlin.de>
 <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
 <!-- xunit.net handles failures and errors the same -->
-<xsl:template name="generic_error" match="failure|error">
+<xsl:template match="failure|error">
     <xsl:attribute name="exception-type">
         <xsl:value-of select="@type"/>
     </xsl:attribute>
 
     <message>
-       <xsl:value-of select="./@message"/>
+       <xsl:value-of select="@message"/>
     </message>
     
     <stackttrace>

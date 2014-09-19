@@ -54,6 +54,7 @@ class _JavaArrayClass(object) :
 		
 	def __getslice__(self, i, j) : 
 		print "__getslice__(%s, %s)" %(i,j)
+		print "sys.maxint = %s" %sys.maxint
 		if j is None or j == sys.maxint:
 			j = _jpype.getArrayLength(self.__javaobject__)
 			print "reset j to size of jarray = %s" %j

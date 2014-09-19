@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- The "root" or "main" template -->
 <xsl:key name="class" match="/testsuite/testcase/@classname" use="." />
-<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
+<xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
 <xsl:template match="testsuite">
 
@@ -11,7 +11,7 @@
 </xsl:attribute> 
 
 <xsl:attribute name="passed">
-  <xsl:value-of select="@tests - @errors - @failures"></xsl:value-of>
+  <xsl:value-of select="@tests - @errors - @failures - @skip"></xsl:value-of>
 </xsl:attribute> 
 
 <xsl:attribute name="failed">
@@ -19,7 +19,7 @@
 </xsl:attribute> 
 
 <xsl:attribute name="skipped">
-  <xsl:value-of select="@failures"></xsl:value-of>
+  <xsl:value-of select="@skip"></xsl:value-of>
 </xsl:attribute>
 
 <!-- class names, only unique -->
@@ -76,16 +76,21 @@ Child   Introduced  Value
 	                            <xsl:value-of select="error/@type"></xsl:value-of>
 	                        </xsl:attribute>
 	                        <message>
-	                        <xsl:value-of select="error"></xsl:value-of>
+	                           <xsl:value-of select="error"></xsl:value-of>
 	                        </message>
 	                    </failure>
                     </xsl:when>
                     <xsl:when test="skipped">
-                    <reason>
-                        <xsl:value-of select="skipped"></xsl:value-of>
-                    </reason>
+	                    <reason>
+	                        <xsl:value-of select="skipped/@message"></xsl:value-of>
+	                    </reason>
                     </xsl:when>
-                    <xsl:otherwise>Pass</xsl:otherwise>
+               </xsl:choose>
+               
+               <xsl:choose>
+               <xsl:when test="system-out">
+                    <output><xsl:value-of select="system-out/."/></output>
+               </xsl:when>
                </xsl:choose>
 	    </test>
     </xsl:for-each>

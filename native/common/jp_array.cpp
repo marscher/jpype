@@ -77,7 +77,7 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 		{
 			PyObject *o = (PyObject *) v->data();
 			stringstream ss;
-			ss << "Unable to convert value at index " << i << ": " << PyInt_AsLong(o);
+			ss << "Unable to convert value at index " << i << ": " << PyObject_REPR(o);
 			RAISE(JPypeException, ss.str());
 		}
 	}	

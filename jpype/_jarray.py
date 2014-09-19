@@ -55,6 +55,7 @@ class _JavaArrayClass(object) :
 	def __getslice__(self, i, j) : 
 		if j == sys.maxint:
 			j = _jpype.getArrayLength(self.__javaobject__)
+			print "given index %s too larger than sys.maxint" % j
 		return _jpype.getArraySlice(self.__javaobject__, i, j)
 		
 	def __setslice__(self, i, j, v) : 

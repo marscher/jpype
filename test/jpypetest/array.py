@@ -130,12 +130,12 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(expected[:], buf[:])
 
     def testJArrayConversionShort(self):
+        # filter out values, which can not be converted to jshort
+        self.VALUES = [v for v in self.VALUES if v < (2**16/2 - 1) 
+                                             and v > (2**16/2 * -1)]
         jarr = jpype.JArray(jpype.JShort)(self.VALUES)
         result = jarr[0 : len(jarr)]
-        self.assertItemsEqual(self.VALUES[:15], result[:15])
-        # this is an expected overflow, since short does not hold '245132'.
-        self.assertEqual(-17012, result[16])
-        self.assertItemsEqual(self.VALUES[17:], result[17:])
+        self.assertItemsEqual(self.VALUES, result)
         
         result = jarr[2:10]
         self.assertItemsEqual(self.VALUES[2:10], result)

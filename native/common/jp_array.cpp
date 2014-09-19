@@ -56,6 +56,7 @@ PyObject* JPArray::getSequenceFromRange(int start, int stop)
 
 void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 {
+	cout << "setRange()" << endl;
 	JPType* compType = m_Class->getComponentType();
 	
 	unsigned int len = stop-start;
@@ -72,7 +73,7 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 	{
 		HostRef* v = val[i];
 		EMatchType matchType = compType->canConvertToJava(v);
-		cout << "matchtype = " << matchType << "; explicit = " << _explicit << endl;
+		cout << "pyval["<< i<<"]: " << PyObject_REPR(o) <<  "; matchtype = " << matchType << endl;
 		if (matchType <= _explicit)
 		{
 			PyObject *o = (PyObject *) v->data();

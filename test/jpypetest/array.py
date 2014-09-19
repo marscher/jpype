@@ -208,7 +208,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertEqual(l3, jarr[2])
         
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetBoolArray(self):
+    def testSetFromNPBoolArray(self):
         import numpy as np
         n = 100
         a = np.random.randint(0, 1, size=n).astype(np.bool)
@@ -217,7 +217,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(a, jarr)
 
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetByteArray(self):
+    def testSetFromNPByteArray(self):
         import numpy as np
         n = 100
         a = np.random.randint(-128, 127, size=n).astype(np.byte)
@@ -226,7 +226,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(a, jarr)
 
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetShortArray(self):
+    def testSetFromNPShortArray(self):
         import numpy as np
         n = 100
         a = np.random.randint(-32768, 32767, size=n).astype(np.short)
@@ -235,7 +235,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(a, jarr)
         
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetIntArray(self):
+    def testSetFromNPIntArray(self):
         import numpy as np
         n = 100
         a = np.random.randint(-2**31 - 1, 2**31 - 1, size=n).astype(np.int32)
@@ -244,7 +244,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(a, jarr)
         
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetLongArray(self):
+    def testSetFromNPLongArray(self):
         import numpy as np
         n = 100
         # actuall the lower bound should be -2**63 -1, but raises Overflow error in numpy
@@ -254,7 +254,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(a, jarr)
     
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetFloatArray(self):
+    def testSetFromNPFloatArray(self):
         import numpy as np
         n = 100
         a = np.random.random(n).astype(np.float32)
@@ -263,7 +263,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(a, jarr)
         
     @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetDoubleArray(self):
+    def testSetFromNPDoubleArray(self):
         import numpy as np
         n = 100
         a = np.random.random(n).astype(np.float64)

@@ -21,7 +21,7 @@ Author: Martin Scherer <m.scherer@fu-berlin.de>
     <message>
        <xsl:value-of select="@message"/>
     </message>
-    
+
     <stackttrace>
        <xsl:value-of select="."/>
     </stackttrace>
@@ -36,15 +36,15 @@ Author: Martin Scherer <m.scherer@fu-berlin.de>
 </xsl:attribute> 
 
 <xsl:attribute name="passed">
-  <xsl:value-of select="@tests - @errors - @failures - @skip"></xsl:value-of>
+  <xsl:value-of select="@tests - @errors - @failures - @skip"/>
 </xsl:attribute> 
 
 <xsl:attribute name="failed">
-  <xsl:value-of select="@errors"></xsl:value-of>
+  <xsl:value-of select="@errors"/>
 </xsl:attribute> 
 
 <xsl:attribute name="skipped">
-  <xsl:value-of select="@skip"></xsl:value-of>
+  <xsl:value-of select="@skip"/>
 </xsl:attribute>
 
 <!-- class names, only unique -->
@@ -61,44 +61,44 @@ Author: Martin Scherer <m.scherer@fu-berlin.de>
         <test>
             <xsl:attribute name="name">
                 <xsl:value-of select="@name"/>
-	        </xsl:attribute>
-	        
-	        <xsl:attribute name="time">
+            </xsl:attribute>
+            <xsl:attribute name="time">
                 <xsl:value-of select="@time"/>
             </xsl:attribute>
-	        
-	        <xsl:variable name="result">
-	           <xsl:choose>
+            <xsl:variable name="result">
+               <xsl:choose>
                     <xsl:when test="error or failure">Fail</xsl:when>
                     <xsl:when test="skipped">Skip</xsl:when>
                     <xsl:otherwise>Pass</xsl:otherwise>
                </xsl:choose>
             </xsl:variable>
             <xsl:attribute name="result">
-               <xsl:value-of select="$result"/>
+                <xsl:value-of select="$result"/>
             </xsl:attribute>
             <xsl:choose>
-                    <xsl:when test="error or failure">
-                    <failure>
-                          <xsl:apply-templates name="generic_error"/>
-                          </failure>
-                    </xsl:when>
-                    
-                    <xsl:when test="skipped">
-	                    <reason>
-	                        <xsl:value-of select="skipped/@message"/>
-	                    </reason>
-                    </xsl:when>
-               </xsl:choose>
+                <xsl:when test="error or failure">
+                <failure>
+                      <xsl:apply-templates name="generic_error"/>
+                      </failure>
+                </xsl:when>
+                
+                <xsl:when test="skipped">
+                    <reason>
+                        <xsl:value-of select="skipped/@message"/>
+                    </reason>
+                </xsl:when>
+            </xsl:choose>
                
-               <xsl:choose>
-               <xsl:when test="system-out">
-                    <output><xsl:value-of select="system-out/."/></output>
-               </xsl:when>
-               </xsl:choose>
+           <xsl:choose>
+                <xsl:when test="system-out">
+                    <output>
+                        <xsl:value-of select="system-out/."/>
+                    </output>
+                </xsl:when>
+           </xsl:choose>
         </test>
     </xsl:for-each>
- </class>
+    </class>
 </xsl:for-each>
 
 </assembly>

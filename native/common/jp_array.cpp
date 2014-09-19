@@ -72,11 +72,11 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 	for (size_t i = 0; i < plength; i++)
 	{
 		HostRef* v = val[i];
+		PyObject *o = (PyObject *) v->data();
 		EMatchType matchType = compType->canConvertToJava(v);
 		cout << "pyval["<< i<<"]: " << PyObject_REPR(o) <<  "; matchtype = " << matchType << endl;
 		if (matchType <= _explicit)
 		{
-			PyObject *o = (PyObject *) v->data();
 			stringstream ss;
 			ss << "Unable to convert value at index " << i << ": " << PyObject_REPR(o);
 			RAISE(JPypeException, ss.str());
@@ -133,6 +133,7 @@ jvalue  JPArray::getValue()
 	val.l = JPEnv::getJava()->NewLocalRef(m_Object);
 	return val;
 }
+
 JCharString JPArray::toString()
 {
 	static const char* value = "Array wrapper";
@@ -142,6 +143,6 @@ JCharString JPArray::toString()
 	{
 		res[i] = value[i];
 	}
-	
+
 	return res;
 }

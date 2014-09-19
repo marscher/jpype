@@ -229,6 +229,11 @@ function DownloadAnt() {
 }
 
 function InstallAnt() {
+    if (Test-Path "c:\apache-ant-1.9.4") {
+        Write-Host "ant already exists"
+        return $false
+    }
+
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
     $folder = unzipAnt $filepath "C:"

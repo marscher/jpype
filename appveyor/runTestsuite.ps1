@@ -24,15 +24,13 @@ function run {
     $stylesheet = "C:/projects/jpype/test/transform_xunit_to_appveyor.xsl";
     $output = "C:/projects/jpype/test/transformed.xml"
     
-    python C:/projects/jpype/test/testsuite.py --xml;
+    nosetests test/jpypetest --all-modules --with-xunit
     $success = $?;
     
-    $input = (Resolve-Path *.xml);
+    $input = "C:/projects/jpype/nosetests.xml";
 
     xslt_transform $input $stylesheet $output
-    
-    Get-Content -path $output;
-    
+
     upload $output
     
     # return exit code of testsuite

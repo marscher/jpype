@@ -157,14 +157,16 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(self.VALUES[2:10], result)
         
     def testJArrayConversionFloat(self):
+        self.VALUES = map(float, self.VALUES)
         jarr = jpype.JArray(jpype.JFloat)(self.VALUES)
         result = jarr[0 : len(jarr)]
-        self.assertItemsEqual(self.VALUES, result)
+        self.assertItemsEqual(jarr, result)
         
         result = jarr[2:10]
         self.assertItemsEqual(self.VALUES[2:10], result)
         
     def testJArrayConversionDouble(self):
+        self.VALUES = map(float, self.VALUES)
         jarr = jpype.JArray(jpype.JDouble)(self.VALUES)
         self.assertItemsEqual(self.VALUES, jarr)
         result = jarr[:]

@@ -41,7 +41,7 @@ platform_specific = {
     'sources': find_sources(),
 }
 
-fallback_jni = os.path.join('src', 'native', 'jni_include')
+fallback_jni = os.path.join('native', 'jni_include')
 # TODO: remove  this
 os.environ['JAVA_HOME'] = ''
 # try to include JNI first from eventually given JAVA_HOME, then from distributed

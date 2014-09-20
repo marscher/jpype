@@ -187,7 +187,7 @@ PyObject* PyJPClass::getClassFields(PyObject* o, PyObject* arg)
 		PyObject* res = JPySequence::newTuple((int)(staticFields.size()+instFields.size()));
 
 		int i = 0;
-		for (map<string, JPField*>::iterator curStatic = staticFields.begin(); curStatic != staticFields.end(); curStatic ++)
+		for (map<string, JPField*>::iterator curStatic = staticFields.begin(); curStatic != staticFields.end(); ++curStatic)
 		{
 			PyObject* f = (PyObject*)PyJPField::alloc(curStatic->second);
 
@@ -196,7 +196,7 @@ PyObject* PyJPClass::getClassFields(PyObject* o, PyObject* arg)
 			Py_DECREF(f);
 		}
 
-		for (map<string, JPField*>::iterator curInst = instFields.begin(); curInst != instFields.end(); curInst ++)
+		for (map<string, JPField*>::iterator curInst = instFields.begin(); curInst != instFields.end(); ++curInst)
 		{
 			PyObject* f = (PyObject*)PyJPField::alloc(curInst->second);
 
@@ -224,7 +224,7 @@ PyObject* PyJPClass::getClassMethods(PyObject* o, PyObject* arg)
 		PyObject* res = JPySequence::newTuple((int)methods.size());
 
 		int i = 0;
-		for (vector<JPMethod*>::iterator curMethod = methods.begin(); curMethod != methods.end(); curMethod ++)
+		for (vector<JPMethod*>::iterator curMethod = methods.begin(); curMethod != methods.end(); ++curMethod)
 		{
 
 			JPMethod* mth= *curMethod;

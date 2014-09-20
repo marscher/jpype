@@ -36,7 +36,7 @@ string JPMethod::getClassName() const
 
 bool JPMethod::hasStatic()
 {
-	for (map<string, JPMethodOverload>::iterator it = m_Overloads.begin(); it != m_Overloads.end(); it++)
+	for (map<string, JPMethodOverload>::iterator it = m_Overloads.begin(); it != m_Overloads.end(); ++it)
 	{
 		if (it->second.isStatic())
 		{
@@ -57,10 +57,10 @@ void JPMethod::addOverloads(JPMethod* o)
 {
 	TRACE_IN("JPMethod::addOverloads");
 	
-	for (map<string, JPMethodOverload>::iterator it = o->m_Overloads.begin(); it != o->m_Overloads.end(); it++)
+	for (map<string, JPMethodOverload>::iterator it = o->m_Overloads.begin(); it != o->m_Overloads.end(); ++it)
 	{
 		bool found = false;
-		for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); cur++)
+		for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); ++cur)
 		{
 			if (cur->second.isSameOverload(it->second))
 			{
@@ -86,7 +86,7 @@ JPMethodOverload* JPMethod::findOverload(vector<HostRef*>& arg, bool needStatic)
 	JPMethodOverload* currentMatch = NULL;
 	EMatchType isExact = _none;
 		
-	for (map<string, JPMethodOverload>::iterator it = m_Overloads.begin(); it != m_Overloads.end(); it++)
+	for (map<string, JPMethodOverload>::iterator it = m_Overloads.begin(); it != m_Overloads.end(); ++it)
 	{
 		if ((! needStatic) || it->second.isStatic())
 		{
@@ -176,7 +176,7 @@ string JPMethod::describe(string prefix)
 		name = "__init__";
 	}
 	stringstream str;
-	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); cur++)
+	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); ++cur)
 	{
 		str << prefix << "public ";
 		if (! m_IsConstructor)
@@ -199,7 +199,7 @@ string JPMethod::describe(string prefix)
 
 bool JPMethod::isBeanMutator()
 {
-	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); cur++)
+	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); ++cur)
 	{
 		if ( (! cur->second.isStatic()) && cur->second.getReturnType().getSimpleName() == "void" && cur->second.getArgumentCount() == 2)
 		{
@@ -211,7 +211,7 @@ bool JPMethod::isBeanMutator()
 
 bool JPMethod::isBeanAccessor()
 {
-	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); cur++)
+	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); ++cur)
 	{
 		if ( (! cur->second.isStatic()) && cur->second.getReturnType().getSimpleName() != "void" && cur->second.getArgumentCount() == 1)
 		{
@@ -226,7 +226,7 @@ string JPMethod::matchReport(vector<HostRef*>& args)
 	stringstream res;
 	res << "Match report for method " << m_Name << ", has " << m_Overloads.size() << " overloads." << endl;
 
-	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); cur++)
+	for (map<string, JPMethodOverload>::iterator cur = m_Overloads.begin(); cur != m_Overloads.end(); ++cur)
 	{
 		res << "  " << cur->second.matchReport(args);
 	}

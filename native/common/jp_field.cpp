@@ -21,53 +21,39 @@ JPField::JPField() :
     m_Class(NULL),
     m_IsStatic(false),
     m_IsFinal(false),
-    m_Field(),
+    m_Field(NULL),
     m_FieldID(NULL),
     m_Type()
 {
 }
 
-JPField::JPField(JPClass* clazz, jobject fld)
+JPField::JPField(JPClass* clazz, jobject fld) :
+	m_Name(JPJni::getMemberName(fld)),
+	m_Class(clazz),
+	m_IsStatic(JPJni::isMemberStatic(fld)),
+	m_IsFinal(JPJni::isMemberFinal(fld)),
+	m_Field(JPEnv::getJava()->NewGlobalRef(fld)),
+	m_FieldID(JPEnv::getJava()->FromReflectedField(fld)),
+	m_Type(JPJni::getType(m_Field))
 {
-	TRACE_IN("JPField::JPField1");
-	
-	m_Class = clazz;
-	m_Field = JPEnv::getJava()->NewGlobalRef(fld);
-	
-	m_Name = JPJni::getMemberName(fld);
-	
-	m_IsStatic = JPJni::isMemberStatic(fld);
-	m_IsFinal = JPJni::isMemberFinal(fld);
-	m_FieldID = JPEnv::getJava()->FromReflectedField(fld);
-	m_Type = JPJni::getType(m_Field);	
-
-	TRACE2("field type", m_Type.getSimpleName());
-	
-
-	TRACE_OUT
 }
 
-JPField::JPField(const JPField& fld)
+JPField::JPField(const JPField& fld) :
+	m_Name(fld.m_Name),
+	m_Class(fld.m_Class),
+	m_IsStatic(fld.m_IsStatic),
+	m_IsFinal(fld.m_IsFinal),
+	m_Field(JPEnv::getJava()->NewGlobalRef(fld.m_Field)),
+	m_FieldID(fld.m_FieldID),
+	m_Type(fld.m_Type)
 {
-	TRACE_IN("JPField::JPField2");
-	
-	m_Name = fld.m_Name; 
-	m_IsStatic = fld.m_IsStatic;
-	m_IsFinal = fld.m_IsFinal;
-	m_FieldID = fld.m_FieldID;
-	m_Type = fld.m_Type;
-
-	m_Class = fld.m_Class;
-
-	m_Field = JPEnv::getJava()->NewGlobalRef(fld.m_Field);
-	TRACE_OUT;
 }
 
 JPField::~JPField()
 {
 	TRACE_IN("JPField::~JPField");
 	JPEnv::getJava()->DeleteGlobalRef(m_Field);
-	TRACE_OUT;
+	TRACE_OUT_DTOR;
 }
 	
 bool JPField::isStatic() const

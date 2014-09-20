@@ -111,6 +111,9 @@ public :
 	}
 	
 	template <class T>
+#ifndef TRACING
+	static
+#endif
 	void trace(T msg)
 	{
 #ifdef TRACING
@@ -121,6 +124,9 @@ public :
 	}
 	
 	template <class T, class U>
+#ifndef TRACING
+	static
+#endif
 	void trace(T msg1, U msg2)
 	{
 #ifdef TRACING
@@ -131,6 +137,9 @@ public :
 	}
 
 	template <class T, class U, class V>
+#ifndef TRACING
+	static
+#endif
 	void trace(T msg1, U msg2, V msg3)
 	{
 #ifdef TRACING

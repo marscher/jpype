@@ -27,6 +27,7 @@
 
 #define TRACE_IN(n) JPypeTracer _trace(n); try {
 #define TRACE_OUT } catch(...) { _trace.gotError(); throw; }
+#define TRACE_OUT_DTOR } catch(...) { _trace.gotError(); }
 #define TRACE1(m) _trace.trace(m)
 #define TRACE2(m,n) _trace.trace(m,n)
 #define TRACE3(m,n,o) _trace.trace(m,n,o)

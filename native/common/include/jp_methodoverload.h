@@ -38,12 +38,12 @@ public :
 public :	
 	string getSignature();
 
-	bool isStatic()
+	bool isStatic() const
 	{
 		return m_IsStatic;
 	}
 	
-	bool isFinal()
+	bool isFinal() const
 	{
 		return m_IsFinal;
 	}
@@ -53,7 +53,7 @@ public :
 		return m_ReturnType;
 	}
 
-	unsigned char getArgumentCount()
+	unsigned char getArgumentCount() const
 	{
 		return (unsigned char)m_Arguments.size();
 	}

@@ -99,7 +99,7 @@ public :
 		convertStringObjects = flag;
 	}
 
-	bool getConvertStringObjects()
+	bool getConvertStringObjects() const
 	{
 		return convertStringObjects;
 	}
@@ -110,7 +110,7 @@ public :
 		referenceQueue = NewGlobalRef(obj);
 	}
 
-	jobject getReferenceQueue()
+	jobject getReferenceQueue() const
 	{
 		return referenceQueue;
 	}

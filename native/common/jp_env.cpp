@@ -194,17 +194,17 @@ JPCleaner::~JPCleaner()
 //AT's comments on porting:
 // A variety of Unix compilers do not allow redifinition of the same variable in "for" cycless
 	vector<jobject>::iterator cur;
-	for (cur = m_GlobalJavaObjects.begin(); cur != m_GlobalJavaObjects.end(); cur++)
+	for (cur = m_GlobalJavaObjects.begin(); cur != m_GlobalJavaObjects.end(); ++cur)
 	{
 		JPEnv::getJava()->DeleteGlobalRef(*cur);
 	}
 	
-	for (cur = m_LocalJavaObjects.begin(); cur != m_LocalJavaObjects.end(); cur++)
+	for (cur = m_LocalJavaObjects.begin(); cur != m_LocalJavaObjects.end(); ++cur)
 	{
 		JPEnv::getJava()->DeleteLocalRef(*cur);
 	}
 
-	for (vector<HostRef*>::iterator cur2 = m_HostObjects.begin(); cur2 != m_HostObjects.end(); cur2++)
+	for (vector<HostRef*>::iterator cur2 = m_HostObjects.begin(); cur2 != m_HostObjects.end(); ++cur2)
 	{
 		(*cur2)->release();
 	}
@@ -227,7 +227,7 @@ void JPCleaner::add(HostRef* obj)
 
 void JPCleaner::removeGlobal(jobject obj)
 {
-	for (vector<jobject>::iterator cur = m_GlobalJavaObjects.begin(); cur != m_GlobalJavaObjects.end(); cur++)
+	for (vector<jobject>::iterator cur = m_GlobalJavaObjects.begin(); cur != m_GlobalJavaObjects.end(); ++cur)
 	{
 		if (*cur == obj)
 		{
@@ -239,7 +239,7 @@ void JPCleaner::removeGlobal(jobject obj)
 
 void JPCleaner::removeLocal(jobject obj)
 {
-	for (vector<jobject>::iterator cur = m_LocalJavaObjects.begin(); cur != m_LocalJavaObjects.end(); cur++)
+	for (vector<jobject>::iterator cur = m_LocalJavaObjects.begin(); cur != m_LocalJavaObjects.end(); ++cur)
 	{
 		if (*cur == obj)
 		{
@@ -251,7 +251,7 @@ void JPCleaner::removeLocal(jobject obj)
 
 void JPCleaner::remove(HostRef* obj)
 {
-	for (vector<HostRef*>::iterator cur2 = m_HostObjects.begin(); cur2 != m_HostObjects.end(); cur2++)
+	for (vector<HostRef*>::iterator cur2 = m_HostObjects.begin(); cur2 != m_HostObjects.end(); ++cur2)
 	{
 		if (*cur2 == obj)
 		{
@@ -288,7 +288,7 @@ void JPCleaner::addAll(vector<HostRef*>& r)
 
 void JPCleaner::removeAllGlobal(vector<jobject>& r)
 {
-	for (vector<jobject>::iterator cur = r.begin(); cur != r.end(); cur++)
+	for (vector<jobject>::iterator cur = r.begin(); cur != r.end(); ++cur)
 	{
 		removeGlobal(*cur);
 	}
@@ -296,7 +296,7 @@ void JPCleaner::removeAllGlobal(vector<jobject>& r)
 
 void JPCleaner::removeAllLocal(vector<jobject>& r)
 {
-	for (vector<jobject>::iterator cur = r.begin(); cur != r.end(); cur++)
+	for (vector<jobject>::iterator cur = r.begin(); cur != r.end(); ++cur)
 	{
 		removeLocal(*cur);
 	}
@@ -304,7 +304,7 @@ void JPCleaner::removeAllLocal(vector<jobject>& r)
 
 void JPCleaner::removeAll(vector<HostRef*>& r)
 {
-	for (vector<HostRef*>::iterator cur = r.begin(); cur != r.end(); cur++)
+	for (vector<HostRef*>::iterator cur = r.begin(); cur != r.end(); ++cur)
 	{
 		remove(*cur);
 	}

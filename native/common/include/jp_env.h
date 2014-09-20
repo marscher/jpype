@@ -76,6 +76,7 @@ public :
 	
 private :
 	T* mData;
+	JPMallocCleaner(const JPMallocCleaner&) {}
 };
 
 namespace JPEnv

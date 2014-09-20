@@ -31,17 +31,17 @@ JPClass::~JPClass()
     // interfaces of this cannot be simply deleted here, since they may be also
 	// super types of other classes, which would be invalidated by doing so.
 
-	for (map<string, JPMethod*>::iterator mthit = m_Methods.begin(); mthit != m_Methods.end(); mthit ++)
+	for (map<string, JPMethod*>::iterator mthit = m_Methods.begin(); mthit != m_Methods.end(); ++mthit)
 	{
 		delete mthit->second;
 	}
 
-	for (map<string, JPField*>::iterator fldit = m_InstanceFields.begin(); fldit != m_InstanceFields.end(); fldit++)
+	for (map<string, JPField*>::iterator fldit = m_InstanceFields.begin(); fldit != m_InstanceFields.end(); ++fldit)
 	{
 		delete fldit->second;
 	}
 
-	for (map<string, JPField*>::iterator fldit2 = m_StaticFields.begin(); fldit2 != m_StaticFields.end(); fldit2++)
+	for (map<string, JPField*>::iterator fldit2 = m_StaticFields.begin(); fldit2 != m_StaticFields.end(); ++fldit2)
 	{
 		delete fldit2->second;
 	}
@@ -86,7 +86,7 @@ void JPClass::loadSuperInterfaces()
 
 	cleaner.addAllLocal(intf);
 
-	for (vector<jclass>::iterator it = intf.begin(); it != intf.end(); it++)
+	for (vector<jclass>::iterator it = intf.begin(); it != intf.end(); ++it)
 	{
 		JPTypeName intfName = JPJni::getName(*it);
 		JPClass* interface = JPTypeManager::findClass(intfName);
@@ -101,7 +101,7 @@ void JPClass::loadFields()
 	vector<jobject> fields = JPJni::getDeclaredFields(m_Class);
 	cleaner.addAllLocal(fields);
 
-	for (vector<jobject>::iterator it = fields.begin(); it != fields.end(); it++)
+	for (vector<jobject>::iterator it = fields.begin(); it != fields.end(); ++it)
 	{
 		JPField* field = new JPField(this, *it);
 		if (field->isStatic())
@@ -126,7 +126,7 @@ void JPClass::loadMethods()
 	vector<jobject> methods = JPJni::getDeclaredMethods(m_Class);
 	cleaner.addAllLocal(methods);
 
-	for (vector<jobject>::iterator it = methods.begin(); it != methods.end(); it++)
+	for (vector<jobject>::iterator it = methods.begin(); it != methods.end(); ++it)
 	{
 		const string& name = JPJni::getMemberName(*it);
 
@@ -148,7 +148,7 @@ void JPClass::loadMethods()
 	// add previous overloads to methods defined in THIS class
 	while (superclass != NULL)
 	{
-		for (map<string, JPMethod*>::iterator cur = m_Methods.begin(); cur != m_Methods.end(); cur ++)
+		for (map<string, JPMethod*>::iterator cur = m_Methods.begin(); cur != m_Methods.end(); ++cur)
 		{
 			const string& name = cur->first;
 			JPMethod* superMethod = superclass->getMethod(name);
@@ -177,7 +177,7 @@ void JPClass::loadConstructors()
 	vector<jobject> methods = JPJni::getDeclaredConstructors(m_Class);
 	cleaner.addAllLocal(methods);
 
-	for (vector<jobject>::iterator it = methods.begin(); it != methods.end(); it++)
+	for (vector<jobject>::iterator it = methods.begin(); it != methods.end(); ++it)
 	{
 		if (JPJni::isMemberPublic(*it))
 		{
@@ -523,7 +523,7 @@ string JPClass::describe()
 	{
 		out << " implements";
 		bool first = true;
-		for (vector<JPClass*>::iterator itf = m_SuperInterfaces.begin(); itf != m_SuperInterfaces.end(); itf++)
+		for (vector<JPClass*>::iterator itf = m_SuperInterfaces.begin(); itf != m_SuperInterfaces.end(); ++itf)
 		{
 			if (!first)
 			{
@@ -541,7 +541,7 @@ string JPClass::describe()
 
 	// Fields
 	out << "  // Accessible Static Fields" << endl;
-	for (map<string, JPField*>::iterator curField = m_StaticFields.begin(); curField != m_StaticFields.end(); curField++)
+	for (map<string, JPField*>::iterator curField = m_StaticFields.begin(); curField != m_StaticFields.end(); ++curField)
 	{
 		JPField* f = curField->second;
 		out << "  public static ";
@@ -553,7 +553,7 @@ string JPClass::describe()
 	}
 	out << endl;
 	out << "  // Accessible Instance Fields" << endl;
-	for (map<string, JPField*>::iterator curInstField = m_InstanceFields.begin(); curInstField != m_InstanceFields.end(); curInstField++)
+	for (map<string, JPField*>::iterator curInstField = m_InstanceFields.begin(); curInstField != m_InstanceFields.end(); ++curInstField)
 	{
 		JPField* f = curInstField->second;
 		out << "  public ";
@@ -570,7 +570,7 @@ string JPClass::describe()
 	out << m_Constructors->describe("  ") << endl;
 
 	out << "  // Accessible Methods" << endl;
-	for (map<string, JPMethod*>::iterator curMethod = m_Methods.begin(); curMethod != m_Methods.end(); curMethod++)
+	for (map<string, JPMethod*>::iterator curMethod = m_Methods.begin(); curMethod != m_Methods.end(); ++curMethod)
 	{
 		JPMethod* f = curMethod->second;
 		out << f->describe("  ");

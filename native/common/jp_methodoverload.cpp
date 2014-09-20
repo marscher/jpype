@@ -80,7 +80,7 @@ string JPMethodOverload::getSignature()
 	
 	res << "(";
 	
-	for (vector<JPTypeName>::iterator it = m_Arguments.begin(); it != m_Arguments.end(); it++)
+	for (vector<JPTypeName>::iterator it = m_Arguments.begin(); it != m_Arguments.end(); ++it)
 	{
 		res << it->getNativeName();
 	}
@@ -97,7 +97,7 @@ string JPMethodOverload::getArgumentString()
 	res << "(";
 	
 	bool first = true;
-	for (vector<JPTypeName>::iterator it = m_Arguments.begin(); it != m_Arguments.end(); it++)
+	for (vector<JPTypeName>::iterator it = m_Arguments.begin(); it != m_Arguments.end(); ++it)
 	{
 		if (! first)
 		{
@@ -308,7 +308,7 @@ string JPMethodOverload::matchReport(vector<HostRef*>& args)
 	res << m_ReturnType.getNativeName() << " (";
 
 	bool isFirst = true;
-	for (vector<JPTypeName>::iterator it = m_Arguments.begin(); it != m_Arguments.end(); it++)
+	for (vector<JPTypeName>::iterator it = m_Arguments.begin(); it != m_Arguments.end(); ++it)
 	{
 		if (isFirst && ! isStatic())
 		{

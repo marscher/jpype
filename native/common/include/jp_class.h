@@ -44,7 +44,7 @@ public :
 	{
 		vector<JPMethod*> res;
 		res.reserve(m_Methods.size());
-		for (map<string, JPMethod*>::const_iterator cur = m_Methods.begin(); cur != m_Methods.end(); cur++)
+		for (map<string, JPMethod*>::const_iterator cur = m_Methods.begin(); cur != m_Methods.end(); ++cur)
 		{
 			res.push_back(cur->second);
 		}
@@ -68,7 +68,7 @@ public :
 
 	bool isFinal();
 	bool isAbstract();
-	bool isInterface()
+	bool isInterface() const
 	{
 		return m_IsInterface;
 	}

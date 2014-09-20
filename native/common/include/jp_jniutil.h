@@ -175,6 +175,6 @@ namespace JPJni
 	jclass getCharacterClass();
 	jclass getBooleanClass();
 	jclass getVoidClass();
-};
+}
 
 #endif // _JPJNIUTIL_H_

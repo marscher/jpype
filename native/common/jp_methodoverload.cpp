@@ -16,9 +16,16 @@
 *****************************************************************************/   
 #include <jpype.h>
 
-JPMethodOverload::JPMethodOverload()
+JPMethodOverload::JPMethodOverload() :
+	m_Class(NULL),
+	m_Method(NULL),
+	m_MethodID(NULL),
+	m_ReturnType(),
+	m_Arguments(),
+	m_IsStatic(false),
+	m_IsFinal(false),
+	m_IsConstructor(false)
 {
-	m_Method = NULL;
 }
 
 JPMethodOverload::JPMethodOverload(const JPMethodOverload& o) :

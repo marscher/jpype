@@ -8,7 +8,7 @@
        http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
+   distributed under the License is distributed on an "AS IS" BASIS(NULL),
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
@@ -21,7 +21,16 @@
 class PythonHostEnvironment : public HostEnvironment
 {
 public :
-	PythonHostEnvironment()
+	PythonHostEnvironment() :
+		 m_JavaLangObject(NULL),
+		 m_JavaArrayClass(NULL),
+		 m_WrapperClass(NULL),
+		 m_StringWrapperClass(NULL),
+		 m_ProxyClass(NULL),
+		 m_GetClassMethod(NULL),
+		 m_GetArrayClassMethod(NULL),
+		 m_SpecialConstructorKey(NULL),
+		 m_JavaExceptionClass(NULL),
 	{
 	}
 	

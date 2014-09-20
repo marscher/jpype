@@ -76,11 +76,9 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 		if (matchType <= _explicit)
 		{
 			stringstream ss;
-//			PyObject *o = (PyObject *) v->data();
 			string str = JPEnv::getHost()->describeRef(v);
-			ss << "Unable to convert value at index " << i << ": " << str//PyObject_REPR(o)
+			ss << "Unable to convert value at index " << i << ": " << str
 					<< "; matchtype = " << matchType;
-//			DECREF(o);
 			RAISE(JPypeException, ss.str());
 		}
 	}	

@@ -17,8 +17,8 @@
 #include <jpype.h>
 
 JPClass::JPClass(const JPTypeName& n, jclass c) : 
-	m_IsInterface(false),
 	JPClassBase(n, c),
+	m_IsInterface(false),
 	m_SuperClass(NULL),
 	m_Constructors(NULL)
 {

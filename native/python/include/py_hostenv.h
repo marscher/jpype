@@ -30,7 +30,7 @@ public :
 		 m_GetClassMethod(NULL),
 		 m_GetArrayClassMethod(NULL),
 		 m_SpecialConstructorKey(NULL),
-		 m_JavaExceptionClass(NULL),
+		 m_JavaExceptionClass(NULL)
 	{
 	}
 	

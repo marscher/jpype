@@ -62,7 +62,7 @@ HostRef* JPByteType::asHostObjectFromObject(jvalue val)
 EMatchType JPByteType::canConvertToJava(HostRef* obj)
 {
 
-	cout << "can this byte: " << JPEnv::getHost()->describeRef(v) << " be converted?" << endl;
+	cout << "can this byte: " << JPEnv::getHost()->describeRef(obj) << " be converted?" << endl;
 
 	if (JPEnv::getHost()->isNone(obj))
 	{

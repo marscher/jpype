@@ -28,6 +28,7 @@ function run {
     
     $importable=python -c "import jpype"
     if( -not $importable) {
+       python -vvv -c "import jpype"
        throw "Jpype module is not importable - fail"
     }
      

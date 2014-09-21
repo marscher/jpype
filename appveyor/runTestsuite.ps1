@@ -26,6 +26,11 @@ function run {
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
     
+    $importable=python -c "import jpype"
+    if( -not $importable) {
+       throw "Jpype module is not importable - fail"
+    }
+     
     nosetests test/jpypetest --all-modules --with-xunit
     $success = $?
     Write-Host "result code of nosetests:" $success

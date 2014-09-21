@@ -28,11 +28,6 @@ environment:
       PYTHON_ARCH: "64"
       NUMPY: "--disable-numpy"
 
-cache:
-  - C:\Python*
-  - C:\ant
-  - C:\apache-ant-1.9.4
-
 install:
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.

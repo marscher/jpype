@@ -240,11 +240,8 @@ function InstallAnt() {
     7z x $filepath > $null
     popd
     
-    Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse
-    
-    # create link to default ant binary dir, so we can rely on it.
-    cmd.exe /c mklink /d C:\ant $ant_path
-    $env:path=$env:path;"C:/ant/bin"
+    #Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse
+    $env:path=$env:path;$env:ANT_HOME\bin
     
     ant -v
 }

@@ -7,6 +7,23 @@ $BASE_URL = "https://www.python.org/ftp/python/"
 $GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
 $GET_PIP_PATH = "C:\get-pip.py"
 
+$JRE_X86_URL = "http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jre-7u67-windows-i586.exe"
+
+function InstallJRE() {
+    trap [Exception]
+    {
+        Write-Host $_.Exception
+        throw "install jre failed"
+    }
+
+    $webclient = New-Object System.Net.WebClient
+    
+    $output="jre.exe"
+    $webclient.DownloadFile($url, $output)
+    
+    $output /s INSTALLDIR=c:/jre
+}
+
 
 function DownloadPython ($python_version, $platform_suffix) {
     $webclient = New-Object System.Net.WebClient
@@ -249,6 +266,7 @@ function InstallAnt() {
 }
 
 function main () {
+    InstallJRE
     InstallAnt
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallMinicondaPip $env:PYTHON

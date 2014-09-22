@@ -18,7 +18,7 @@ function InstallJRE() {
 
     $webclient = New-Object System.Net.WebClient
     
-    $output="jre.exe"
+    $output="C:/jre.exe"
     $webclient.DownloadFile($url, $output)
     
     start-process $output /s INSTALLDIR=c:/jre

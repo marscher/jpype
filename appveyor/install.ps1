@@ -7,7 +7,7 @@ $BASE_URL = "https://www.python.org/ftp/python/"
 $GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
 $GET_PIP_PATH = "C:\get-pip.py"
 
-$JRE_X86_URL = "http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jre-7u67-windows-i586.exe"
+$JRE_X86_URL = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u60-unofficial-windows-i586-image.zip"
 
 function InstallJRE() {
     trap [Exception]
@@ -18,10 +18,11 @@ function InstallJRE() {
 
     $webclient = New-Object System.Net.WebClient
     
-    $output="C:/jre.exe"
+    $output="C:/jre.zip"
     $webclient.DownloadFile($JRE_X86_URL, $output)
     
-    start-process $output "/s INSTALLDIR=c:/jre"
+    7z x -d 
+    7z x $output -o"C:/jre/" openjdk-1.7.0-u60-unofficial-windows-i586-image/jre
 }
 
 
@@ -265,11 +266,18 @@ function InstallAnt() {
     cmd.exe /c mklink /d C:\ant $folder
 }
 
+function f() {
+    $env:test="123"
+}
+
 function main () {
+    f
+    write-host $env:test
+    throw "stop here please"
     #InstallJRE
-    InstallAnt
-    InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallMinicondaPip $env:PYTHON
+    #InstallAnt
+    #InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    #InstallMinicondaPip $env:PYTHON
 }
 
 main

@@ -196,8 +196,11 @@ function unzipAnt($file, $destination) {
         return
     }
 
+    write-host "unpacking ant to " $destination
+
     7z x $file -o$destination
     
+    ant -h
     dir "C:"
     dir "C:/a*"
     dir "C:/ant/bin"

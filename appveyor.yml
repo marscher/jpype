@@ -13,20 +13,20 @@ environment:
       PYTHON_VERSION: "2.7.8"
       PYTHON_ARCH: "32"
 
-    - PYTHON: "C:\\Python27_64"
-      PYTHON_VERSION: "2.7.8"
-      PYTHON_ARCH: "64"
+#    - PYTHON: "C:\\Python27_64"
+#      PYTHON_VERSION: "2.7.8"
+#      PYTHON_ARCH: "64"
 
 # opt out numpy 
-    - PYTHON: "C:\\Python27_32"
-      PYTHON_VERSION: "2.7.8"
-      PYTHON_ARCH: "32"
-      NUMPY: "--disable-numpy"
+#    - PYTHON: "C:\\Python27_32"
+#      PYTHON_VERSION: "2.7.8"
+#      PYTHON_ARCH: "32"
+#      NUMPY: "--disable-numpy"
 
-    - PYTHON: "C:\\Python27_64"
-      PYTHON_VERSION: "2.7.8"
-      PYTHON_ARCH: "64"
-      NUMPY: "--disable-numpy"
+#    - PYTHON: "C:\\Python27_64"
+#      PYTHON_VERSION: "2.7.8"
+#      PYTHON_ARCH: "64"
+#      NUMPY: "--disable-numpy"
 
 install:
   # Install Python (from the official .msi of http://python.org) and pip when

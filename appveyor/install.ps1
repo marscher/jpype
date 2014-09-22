@@ -195,13 +195,19 @@ function unzipAnt($file, $destination) {
         Write-Host "File " $file "does not exist!"
         return
     }
+    
+    trap [Exception]
+    {
+        Write-Host $_.Exception
+        throw "install jre failed"
+    }
 
     write-host "unpacking ant to " $destination
 
     7z x $file -o$destination > $null
     
-    ant -h
-    dir "C:"
+    dir $destination
+    dir "C:/"
     dir "C:/a*"
     dir "C:/ant/bin"
 }

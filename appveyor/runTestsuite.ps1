@@ -26,7 +26,7 @@ function run {
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
     
-    python -c "import _jpype; print _jpype.isStarted()"
+    python -c "import jpype; jpype.startJVM(jpype.getDefaultJVM())"
     $importable=python -c "import _jpype; print _jpype.isStarted()"
     if( -not $importable) {
        #python -vvv -c "import _jpype"

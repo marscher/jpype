@@ -9,7 +9,7 @@ $GET_PIP_PATH = "C:\get-pip.py"
 
 $JRE_X86_URL = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u60-unofficial-windows-i586-image.zip"
 
-function InstallJRE() {
+function InstallJRE_x86() {
     trap [Exception]
     {
         Write-Host $_.Exception
@@ -21,8 +21,8 @@ function InstallJRE() {
     $output="C:/jre.zip"
     $webclient.DownloadFile($JRE_X86_URL, $output)
     
-    7z x -d 
-    7z x $output -o"C:/jre/" openjdk-1.7.0-u60-unofficial-windows-i586-image/jre
+    7z x $output openjdk-1.7.0-u60-unofficial-windows-i586-image/jre
+    $env:JAVA_HOME="C:/openjdk-1.7.0-u60-unofficial-windows-i586-image/jre/"
 }
 
 
@@ -196,23 +196,8 @@ function unzipAnt($file, $destination) {
         return
     }
     
-    if (-Not (Test-Path $destination)) {
-        mkdir $destination
-    }
 
-    Write-Host "extract " $file " to " $destination
-    $shell_app = new-object -com shell.application
-    $zip_file = $shell_app.namespace($file)
-    $dir = $shell_app.namespace($destination)
-    $dir.Copyhere($zip_file.items())
-
-    # this should return the only folder name contained in ant.zip
-    #$foldername = ""
-    $zip_file.items() | foreach {
-        $foldername = $_.name
-        Write-Host "current foldername" $foldername
-    }
-    return $foldername
+    7z x $file -o$destination
 }
 
 function DownloadAnt() {
@@ -247,37 +232,25 @@ function DownloadAnt() {
 }
 
 function InstallAnt() {
-    if (Test-Path "c:\apache-ant-1.9.4") {
+    $ant_path  = "C:\apache-ant-1.9.4\"
+    if (Test-Path $ant_path) {
         Write-Host "ant already exists"
         return $false
     }
 
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
-    $folder = unzipAnt $filepath "C:"
+    unzipAnt $filepath "C:" 
     
-    $ant_path  = "C:\" + $folder + "\bin"
-    
-    if (-not (Test-Path $ant_path)) {
-        Throw "unpacked folder" + $ant_path +"does not exist!"
-    }
-
     # create link to default ant binary dir, so we can rely on it.
-    cmd.exe /c mklink /d C:\ant $folder
-}
-
-function f() {
-    $env:test="123"
+    cmd.exe /c mklink /d C:\ant $ant_path
 }
 
 function main () {
-    f
-    write-host $env:test
-    throw "stop here please"
-    #InstallJRE
-    #InstallAnt
-    #InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    #InstallMinicondaPip $env:PYTHON
+    InstallJRE_x86
+    InstallAnt
+    InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    InstallMinicondaPip $env:PYTHON
 }
 
 main

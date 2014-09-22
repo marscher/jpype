@@ -61,6 +61,7 @@ public :
 			error:
 			std::stringstream msg;
 			msg << "Unable to load DLL [" << path << "], error = " << formatMessage(GetLastError());
+			cout << msg << endl;
 			RAISE(JPypeException, msg.str());
 		}
 	}

@@ -190,26 +190,6 @@ function InstallMinicondaPip ($python_home) {
     }
 }
 
-function unzipAnt($file, $destination) {
-    if (-Not (Test-Path $file)) {
-        Write-Host "File " $file "does not exist!"
-        return
-    }
-    
-    trap [Exception]
-    {
-        Write-Host $_.Exception
-        throw "install jre failed"
-    }
-
-    write-host "unpacking ant to " $destination
-
-    7z x $file -o$destination > $null
-    
-    dir $destination
-    ant
-}
-
 function DownloadAnt() {
     $url = "http://www.us.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.zip"
     $webclient = New-Object System.Net.WebClient
@@ -242,6 +222,12 @@ function DownloadAnt() {
 }
 
 function InstallAnt() {
+    trap [Exception]
+    {
+        Write-Host $_.Exception
+        throw "install jre failed"
+    }
+
     $ant_path  = "C:\apache-ant-1.9.4\"
     if (Test-Path $ant_path) {
         Write-Host "ant already exists"
@@ -250,7 +236,7 @@ function InstallAnt() {
 
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
-    unzipAnt $filepath "C:\" 
+    7z x $file -o"C:/" > $null
     
     # create link to default ant binary dir, so we can rely on it.
     cmd.exe /c mklink /d C:\ant $ant_path

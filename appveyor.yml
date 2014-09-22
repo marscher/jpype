@@ -50,7 +50,7 @@ install:
   - "%CMD_IN_ENV% pip install -r test-requirements.txt"
   # if numpy has not been opted out, install it.
   - ps: if (-not $env:NUMPY) {conda install --yes --quiet numpy}
-  - "ant -f test\\build.xml"
+  - "C:\\ant\\bin\\ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
   - "%CMD_IN_ENV% python setup.py install %NUMPY%"
 build: false # Not a C# project, build stuff at the test step instead.

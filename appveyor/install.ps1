@@ -21,7 +21,7 @@ function InstallJRE_x86() {
     $output="C:/jre.zip"
     $webclient.DownloadFile($JRE_X86_URL, $output)
     
-    7z x $output openjdk-1.7.0-u60-unofficial-windows-i586-image/jre
+    7z x $output openjdk-1.7.0-u60-unofficial-windows-i586-image/jre > $null
     $env:JAVA_HOME="C:/openjdk-1.7.0-u60-unofficial-windows-i586-image/jre/"
 }
 
@@ -196,7 +196,7 @@ function unzipAnt($file, $destination) {
         return
     }
 
-    7z x $file -o$destination
+    7z x $file -o$destination > $null
 }
 
 function DownloadAnt() {

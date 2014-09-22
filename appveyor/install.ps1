@@ -198,7 +198,7 @@ function unzipAnt($file, $destination) {
 
     write-host "unpacking ant to " $destination
 
-    7z x $file -o$destination
+    7z x $file -o$destination > $null
     
     ant -h
     dir "C:"

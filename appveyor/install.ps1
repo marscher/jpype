@@ -197,6 +197,8 @@ function unzipAnt($file, $destination) {
     }
 
     7z x $file -o$destination > $null
+    
+    dir "C:/ant/bin"
 }
 
 function DownloadAnt() {

@@ -243,7 +243,7 @@ function InstallAnt() {
 
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
-    unzipAnt $filepath "C:" 
+    unzipAnt $filepath "C:\" 
     
     # create link to default ant binary dir, so we can rely on it.
     cmd.exe /c mklink /d C:\ant $ant_path

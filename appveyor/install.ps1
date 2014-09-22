@@ -196,7 +196,7 @@ function unzipAnt($file, $destination) {
         return
     }
 
-    7z x -xr\!manual $file -o$destination 
+    7z x $file -o$destination > nul
 }
 
 function DownloadAnt() {
@@ -243,7 +243,7 @@ function InstallAnt() {
     
     # create link to default ant binary dir, so we can rely on it.
     cmd.exe /c mklink /d C:\ant $ant_path
-    $env:path=$env:path;C:/ant/bin
+    $env:path=$env:path;"C:/ant/bin"
 }
 
 function main () {

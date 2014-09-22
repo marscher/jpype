@@ -26,9 +26,9 @@ function run {
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
     
-    $importable=python -c "import jpype"
+    $importable=python -c "import _jpype"
     if( -not $importable) {
-       python -vvv -c "import jpype"
+       python -vvv -c "import _jpype"
        throw "Jpype module is not importable - fail"
     }
      

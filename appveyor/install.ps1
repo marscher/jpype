@@ -228,8 +228,7 @@ function InstallAnt() {
         throw "install ant failed"
     }
 
-    $ant_path  = "C:\apache-ant-1.9.4\"
-    if (Test-Path $ant_path) {
+    if (Test-Path $env:ANT_HOME) {
         Write-Host "ant already exists"
         return $false
     }
@@ -241,7 +240,7 @@ function InstallAnt() {
     popd
     
     #Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse
-    $env:path=$env:path;$env:ANT_HOME\bin
+    $env:path=$env:path;$env:ANT_HOME + "\bin"
     
     ant -v
 }

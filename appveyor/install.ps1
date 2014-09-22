@@ -196,8 +196,10 @@ function unzipAnt($file, $destination) {
         return
     }
 
-    7z x $file -o$destination > $null
+    7z x $file -o$destination
     
+    dir "C:"
+    dir "C:/a*"
     dir "C:/ant/bin"
 }
 

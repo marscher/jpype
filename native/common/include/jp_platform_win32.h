@@ -18,6 +18,7 @@
 #define _PLATFORM_WIN32_H_
 
 #include <windows.h>
+#include <jp_utility.h>
 
 /**
  * Windows-specific platform adapter
@@ -50,7 +51,13 @@ private :
 public :
 	virtual void loadLibrary(const char* path)
 	{
-		jvmLibrary = LoadLibrary(path);
+		try {
+			jvmLibrary = LoadLibrary(path);
+		} catch(...) {
+			stringstream ss;
+			ss << "exception during loadLibrary(" << path ")";
+			RAISE(JPypeException, ss.str());
+		}
 		if (jvmLibrary == NULL)
 		{
 			std::stringstream msg;

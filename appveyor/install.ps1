@@ -195,9 +195,8 @@ function unzipAnt($file, $destination) {
         Write-Host "File " $file "does not exist!"
         return
     }
-    
 
-    7z x $file -o$destination
+    7z x $file -o$destination -xr\!manual
 }
 
 function DownloadAnt() {
@@ -244,6 +243,7 @@ function InstallAnt() {
     
     # create link to default ant binary dir, so we can rely on it.
     cmd.exe /c mklink /d C:\ant $ant_path
+    $env:path=$env:path;C:/ant/bin
 }
 
 function main () {

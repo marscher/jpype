@@ -241,6 +241,7 @@ function InstallAnt() {
     
     #Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse
     $env:path=$env:path;$env:ANT_HOME + "\bin"
+    write-host $env:path
     
     ant -v
 }

@@ -21,7 +21,7 @@ function InstallJRE() {
     $output="jre.exe"
     $webclient.DownloadFile($url, $output)
     
-    $output /s INSTALLDIR=c:/jre
+    start-process $output /s INSTALLDIR=c:/jre
 }
 
 

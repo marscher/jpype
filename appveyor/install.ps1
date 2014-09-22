@@ -237,7 +237,7 @@ function InstallAnt() {
     $filepath = DownloadAnt
     # extract to C: (will result in something like C:\apache-ant-1.9.4
     pushd C:\
-    7z x $filepath #> $null
+    7z x $filepath > $null
     popd
     
     Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse

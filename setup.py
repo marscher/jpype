@@ -157,7 +157,7 @@ jpypeLib = Extension(name='_jpype', **platform_specific)
        
 class my_build_ext(build_ext):
     # extra compile args
-    copt = {'msvc': ['/EHs'],
+    copt = {'msvc': ['/EHa'],
             'gcc' : [],
             'mingw32' : [],
            }

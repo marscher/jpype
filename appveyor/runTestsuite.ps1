@@ -25,7 +25,7 @@ function run {
     $stylesheet =  "test/transform_xunit_to_appveyor.xsl"
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
-    python -c "import jpype; jpype.startJVM(jpype.getDefaultJVMPath());jpype.java.lang.System.out.println('test123')"
+    start-process python -c "import jpype; jpype.startJVM(jpype.getDefaultJVMPath());jpype.java.lang.System.out.println('test123')"
     $importable=python -c "import _jpype; print _jpype.isStarted()"
     if( -not $importable) {
        #python -vvv -c "import _jpype"

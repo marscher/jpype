@@ -266,7 +266,7 @@ function InstallAnt() {
 }
 
 function main () {
-    InstallJRE
+    #InstallJRE
     InstallAnt
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallMinicondaPip $env:PYTHON

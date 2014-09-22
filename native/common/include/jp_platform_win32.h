@@ -54,12 +54,11 @@ public :
 		try {
 			jvmLibrary = LoadLibrary(path);
 		} catch(...) {
-			stringstream ss;
-			ss << "exception during loadLibrary(" << path ")";
-			RAISE(JPypeException, ss.str());
+			goto error;
 		}
 		if (jvmLibrary == NULL)
 		{
+			error:
 			std::stringstream msg;
 			msg << "Unable to load DLL [" << path << "], error = " << formatMessage(GetLastError());
 			RAISE(JPypeException, msg.str());

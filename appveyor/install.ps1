@@ -196,7 +196,7 @@ function unzipAnt($file, $destination) {
         return
     }
 
-    7z x $file -o$destination -xr\!manual
+    7z x -xr\!manual $file -o$destination 
 }
 
 function DownloadAnt() {

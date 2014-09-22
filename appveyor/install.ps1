@@ -207,9 +207,7 @@ function unzipAnt($file, $destination) {
     7z x $file -o$destination > $null
     
     dir $destination
-    dir "C:/"
-    dir "C:/a*"
-    dir "C:/ant/bin"
+    ant
 }
 
 function DownloadAnt() {
@@ -257,13 +255,15 @@ function InstallAnt() {
     # create link to default ant binary dir, so we can rely on it.
     cmd.exe /c mklink /d C:\ant $ant_path
     $env:path=$env:path;"C:/ant/bin"
+    
+    ant -v
 }
 
 function main () {
-    InstallJRE_x86
+    #InstallJRE_x86
     InstallAnt
-    InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallMinicondaPip $env:PYTHON
+    #InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    #InstallMinicondaPip $env:PYTHON
 }
 
 main

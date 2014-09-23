@@ -104,7 +104,8 @@ function InstallNumpy() {
     pip install wheel
     #python -m wheel convert --verbose $filepath
     # install wheel
-    RunCommand "pip" "install *.whl"
+    pip install $filepath
+    #RunCommand "pip" "install $filepath"
     #pip install *.whl
     #$args = "\D=$env:PYTHON", "\S"
     #RunCommand $filepath $args

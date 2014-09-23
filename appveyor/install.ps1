@@ -157,7 +157,7 @@ function InstallAnt() {
 }
 
 function main () {
-    $ant_job=Start-Job -ScriptBlock InstallAnt
+    $ant_job=Start-Job -ScriptBlock { InstallAnt }
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallMinicondaPip $env:PYTHON
     Wait-Job -Job $ant_job

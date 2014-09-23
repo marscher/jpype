@@ -37,7 +37,8 @@ install:
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%ANT_HOME%\\bin;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%;%ANT_HOME%\\bin;"
+  - ps: where ant
 
   # Check that we have the expected version and architecture for Python
   - "python --version"

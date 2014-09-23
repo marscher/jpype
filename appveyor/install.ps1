@@ -105,7 +105,7 @@ function InstallNumpy() {
     # install wheel
     #RunCommand "pip" "install *.whl"
     #pip install *.whl
-    $args = "\D", $env:PYTHON
+    $args = "\D=$env:PYTHON", "\S"
     RunCommand $filepath $args
     python -c "import numpy; print numpy.random.random(10)"
     popd

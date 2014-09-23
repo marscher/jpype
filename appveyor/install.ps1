@@ -100,7 +100,8 @@ function InstallNumpy() {
     $webclient.DownloadFile($url, $filepath)
     # convert installer to wheel
     #RunCommand "python" "-m wheel convert $filepath"
-    python -m wheel convert $filepath
+    pip install wheel
+    python -m wheel convert --verbose $filepath
     # install wheel
     #RunCommand "pip" "install *.whl"
     pip install *.whl
@@ -112,6 +113,7 @@ function InstallNumpy() {
 function main () {
     InstallAnt
     InstallPip $env:PYTHON
+    
     # install numpy only, if it has not been opted out.
     if (-not $env:NUMPY) {
         InstallNumpy

@@ -38,10 +38,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%;%ANT_HOME%\\bin;"
-  - echo %PATH%
-  - ps: where ant
   - where ant
-
   # Check that we have the expected version and architecture for Python
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
@@ -51,14 +48,12 @@ install:
   # target Python version and architecture
   - "pip install nose"
   - "pip install -r test-requirements.txt"
-  # if numpy has not been opted out, install it.
-  #- ps: if (-not $env:NUMPY) {conda install --yes --quiet numpy}
+  # compile java test classes
   - "ant -f test\\build.xml"
-  # Build the compiled extension and run the project tests
-  - "%CMD_IN_ENV% python setup.py install %NUMPY%"
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:
+  # try to start jvm first
   - python -c "import jpype; jpype.startJVM(jpype.getDefaultJVMPath());jpype.java.lang.System.out.println('test123')"
   # run testsuite and upload test results to AppVeyor; return exit code of testsuite
   - "powershell ./appveyor/runTestsuite.ps1"

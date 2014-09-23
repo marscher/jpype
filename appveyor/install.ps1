@@ -104,15 +104,18 @@ function InstallNumpy() {
     RunCommand "python" "-m wheel convert $filepath"
     # install wheel
     RunCommand "pip" "install *.whl"
+    
+    python -c "import numpy; print numpy.random.random(10)"
 }
 
 
 function main () {
-    #InstallAnt
+    InstallAnt
     InstallPip $env:PYTHON
-    InstallNumpy
-    
-    RunCommand "python" "-c \"import numpy\""
+    # install numpy only, if it has not been opted out.
+    if (-not $env:NUMPY) {
+        InstallNumpy
+    }
 }
 
 main

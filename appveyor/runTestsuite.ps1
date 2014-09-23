@@ -21,7 +21,6 @@ function upload($file) {
 }
 
 function run {
-    #$env:JAVA_HOME=C:/jre
     cd $env:APPVEYOR_BUILD_FOLDER
     $stylesheet =  "test/transform_xunit_to_appveyor.xsl"
     $input = "nosetests.xml"

@@ -12,6 +12,7 @@ environment:
     - PYTHON: "C:\\Python27"
       PYTHON_ARCH: "32"
       JAVA_HOME: "C:\\Program Files (x86)\\Java\\jdk1.8.0"
+      MINGW: "Y" # mingw only supported for 32 bit at appveyor
 
 #    - PYTHON: "C:\\Python27-x64"
 #      PYTHON_VERSION: "2.7.8"
@@ -50,6 +51,13 @@ install:
   - "pip install -r test-requirements.txt"
   # compile java test classes
   - "ant -f test\\build.xml"
+  
+  # Build the compiled extension and run the project tests
+  - ps: if ($env:MINGW) {
+          python setup.py build_ext -c mingw %NUMPY%;
+          python setup.py install
+        } else { "%CMD_IN_ENV% python setup.py install %NUMPY%" }
+  
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:

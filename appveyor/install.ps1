@@ -219,22 +219,12 @@ function InstallAnt() {
     pushd C:\
     7z x $filepath > $null
     popd
-    
-    ls $env:ANT_HOME
-    
-    #Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse
-    $env_ant=$env:ANT_HOME + "\bin"
-    write-host "env ant: " $env_ant
-    $env:path=$env:path;$env_ant
-    write-host $env:path
-    
-    ant -v
 }
 
 function main () {
     InstallAnt
-    #InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    #InstallMinicondaPip $env:PYTHON
+    InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    InstallMinicondaPip $env:PYTHON
 }
 
 main

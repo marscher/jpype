@@ -34,6 +34,8 @@ environment:
 #      JAVA_HOME: "C:\\Program Files\\Java\\jdk1.8.0"
 
 install:
+  - SET PATH=%PATH%;C:\\mingw\bin
+  - where g++
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - "powershell ./appveyor/install.ps1"
@@ -41,7 +43,7 @@ install:
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%ANT_HOME\\bin;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%ANT_HOME%\\bin;C:\\mingw\\bin;%PATH%"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -51,13 +53,16 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - "%CMD_IN_ENV% pip install wheel nose"
-  - "%CMD_IN_ENV% pip install -r test-requirements.txt"
+  - "%CMD_IN_ENV% pip install nose -rtest-requirements.txt"
   # if numpy has not been opted out, install it.
   - ps: if (-not $env:NUMPY) {conda install --yes --quiet numpy}
-  - "C:\\ant\\bin\\ant.cmd -f test\\build.xml"
+  - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
-  - "%CMD_IN_ENV% python setup.py install %NUMPY%"
+  - ps: if ($env:MINGW) {
+          python setup.py build_ext -c mingw $env:NUMPY;
+          python setup.py install
+        } else { cmd "%CMD_IN_ENV% python setup.py install %NUMPY%" }
+   
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:

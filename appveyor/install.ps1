@@ -100,11 +100,13 @@ function InstallNumpy() {
     $webclient.DownloadFile($url, $filepath)
     # convert installer to wheel
     #RunCommand "python" "-m wheel convert $filepath"
-    pip install wheel
-    python -m wheel convert --verbose $filepath
+    #pip install wheel
+    #python -m wheel convert --verbose $filepath
     # install wheel
     #RunCommand "pip" "install *.whl"
-    pip install *.whl
+    #pip install *.whl
+    $args = "\D", $env:PYTHON
+    $filepath $args
     python -c "import numpy; print numpy.random.random(10)"
     popd
 }

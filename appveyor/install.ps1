@@ -7,25 +7,6 @@ $BASE_URL = "https://www.python.org/ftp/python/"
 $GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
 $GET_PIP_PATH = "C:\get-pip.py"
 
-$JRE_X86_URL = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u60-unofficial-windows-i586-image.zip"
-
-function InstallJRE_x86() {
-    trap [Exception]
-    {
-        Write-Host $_.Exception
-        throw "install jre failed"
-    }
-
-    $webclient = New-Object System.Net.WebClient
-    
-    $output="C:/jre.zip"
-    $webclient.DownloadFile($JRE_X86_URL, $output)
-    
-    7z x $output openjdk-1.7.0-u60-unofficial-windows-i586-image/jre > $null
-    $env:JAVA_HOME="C:/openjdk-1.7.0-u60-unofficial-windows-i586-image/jre/"
-}
-
-
 function DownloadPython ($python_version, $platform_suffix) {
     $webclient = New-Object System.Net.WebClient
     $filename = "python-" + $python_version + $platform_suffix + ".msi"
@@ -239,15 +220,18 @@ function InstallAnt() {
     7z x $filepath > $null
     popd
     
+    ls $env:ANT_HOME
+    
     #Get-ChildItem -Path c:\ -Filter apache-ant-1.9.4 -Recurse
-    $env:path=$env:path;$env:ANT_HOME + "\bin"
+    $env_ant=$env:ANT_HOME + "\bin"
+    write-host "env ant: " $env_ant
+    $env:path=$env:path;$env_ant
     write-host $env:path
     
     ant -v
 }
 
 function main () {
-    #InstallJRE_x86
     InstallAnt
     #InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     #InstallMinicondaPip $env:PYTHON

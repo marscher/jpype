@@ -102,6 +102,7 @@ function InstallNumpy() {
     # convert installer to wheel
     RunCommand "pip" "install wheel"
     RunCommand "python" "-m wheel convert $filepath"
+    ls *.whl
     # install wheel
     RunCommand "pip" "install *.whl"
     

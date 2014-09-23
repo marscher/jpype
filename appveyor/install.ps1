@@ -94,21 +94,21 @@ function InstallNumpy() {
     mkdir C:\numpy_tmp
     pushd C:\numpy_tmp
     # download numpy
-    $url="http://www.mirrorservice.org/sites/ftp.sourceforge.net/pub/sourceforge/n/nu/numpy/NumPy/1.9.0/numpy-1.9.0-win32-superpack-python2.7.exe"
+    #$url="http://www.mirrorservice.org/sites/ftp.sourceforge.net/pub/sourceforge/n/nu/numpy/NumPy/1.9.0/numpy-1.9.0-win32-superpack-python2.7.exe"
+    $url="http://www.mi.fu-berlin.de/users/marscher/numpy-1.8.2-cp27-none-win_amd64.whl"
     $webclient = New-Object System.Net.WebClient
     $filepath = "C:\numpy.exe"
     $webclient.DownloadFile($url, $filepath)
     # convert installer to wheel
     #RunCommand "python" "-m wheel convert $filepath"
-    #pip install wheel
+    pip install wheel
     #python -m wheel convert --verbose $filepath
     # install wheel
-    #RunCommand "pip" "install *.whl"
+    RunCommand "pip" "install *.whl"
     #pip install *.whl
-    $args = "\D=$env:PYTHON", "\S"
-    RunCommand $filepath $args
+    #$args = "\D=$env:PYTHON", "\S"
+    #RunCommand $filepath $args
     python -c "import numpy; print numpy.random.random(10)"
-    popd
 }
 
 

@@ -98,7 +98,7 @@ function InstallNumpy() {
     $filepath = "numpy-1.8.2-cp27-none-win_amd64.whl"
     $webclient.DownloadFile($url, $filepath)
     
-    if (-not Test-Path $filepath) {
+    if (-not (Test-Path $filepath)) {
         throw "numpy download failed"
     }
     # convert installer to wheel

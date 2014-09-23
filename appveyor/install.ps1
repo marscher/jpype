@@ -26,6 +26,11 @@ function InstallPip ($python_home) {
     } else {
         Write-Host "pip already installed."
     }
+    
+    $new_env = $env:PATH + ";" + $python_home + "\Scripts"
+    $env:PATH=$new_env
+    
+    where pip
 }
 
 

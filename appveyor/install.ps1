@@ -80,7 +80,7 @@ function InstallAnt() {
 }
 
 
-InstallNumpy() {
+function InstallNumpy() {
     trap [Exception]
     {
         Write-Host $_.Exception

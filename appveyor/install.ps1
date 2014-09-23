@@ -103,9 +103,11 @@ InstallNumpy() {
 
 
 function main () {
-    InstallAnt
+    #InstallAnt
     InstallPip $env:PYTHON
     InstallNumpy
+    
+    RunCommand "python" "-c \"import numpy\""
 }
 
 main

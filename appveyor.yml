@@ -31,7 +31,8 @@ environment:
 #      JAVA_HOME: "C:\\Program Files\\Java\\jdk1.8.0"
 
 install:
-  - dir C:\mingw
+  - dir C:\mingw\bin
+  - dir C:\mingw\mingw32\
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   - "powershell ./appveyor/install.ps1"

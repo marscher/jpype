@@ -91,9 +91,9 @@ function InstallNumpy() {
         Write-Host $_.Exception
         throw "install numpy failed"
     }
-
-    # TODO: figure out: we do not need to define a python home since the installed pip defines install location already?
-
+    mkdir C:\numpy_tmp
+    pushd C:\numpy_tmp
+    pwd
     # download numpy
     $url="http://www.mirrorservice.org/sites/ftp.sourceforge.net/pub/sourceforge/n/nu/numpy/NumPy/1.9.0/numpy-1.9.0-win32-superpack-python2.7.exe"
     $webclient = New-Object System.Net.WebClient
@@ -102,12 +102,11 @@ function InstallNumpy() {
     # convert installer to wheel
     RunCommand "pip" "install wheel"
     RunCommand "python" "-m wheel convert $filepath"
-    dir
     ls
     ls *.whl
     # install wheel
     RunCommand "pip" "install *.whl"
-    
+    popd
     python -c "import numpy; print numpy.random.random(10)"
 }
 

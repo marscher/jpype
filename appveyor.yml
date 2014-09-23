@@ -51,6 +51,8 @@ install:
   - "pip install -r test-requirements.txt"
   # compile java test classes
   - "ant -f test\\build.xml"
+  - echo %PATH%
+  - where gcc
   
   # Build the compiled extension and run the project tests
   - ps: if ($env:MINGW) {

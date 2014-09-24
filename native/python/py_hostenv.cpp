@@ -41,7 +41,7 @@ bool PythonHostEnvironment::isRefNull(void* d)
 string PythonHostEnvironment::describeRef(HostRef* ref)
 {
 	stringstream out;
-	out << PyObject_REPR(UNWRAP(ref);
+	out << PyObject_REPR(UNWRAP(ref));
 	return out.str();
 }
 

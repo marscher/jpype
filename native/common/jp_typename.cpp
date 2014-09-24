@@ -21,18 +21,14 @@ JPTypeName::NativeNamesMap JPTypeName::nativeNames;
 JPTypeName::DefinedTypesMap JPTypeName::definedTypes;
 JPTypeName::NativeTypesMap JPTypeName::nativeTypes;
 
-std::ostream& operator << (std::ostream& os, EMatchType t) {
+std::ostream& operator << (std::ostream& os, EMatchType t)
+{
 	switch(t) {
-	case _none:
-		os << "[none]";
-	case _explicit:
-		os << "[explicit]";
-	case _implicit:
-		os << "[implicit]";
-	case _exact:
-		os << "[exact]";
-	default:
-		os << "[unknown]";
+	case _none:     os << "[none]"; break;
+	case _explicit: os << "[explicit]"; break;
+	case _implicit: os << "[implicit]"; break;
+	case _exact:    os << "[exact]"; break;
+	default:        os << "[unknown]"; break;
 	}
 	return os;
 }

@@ -16,6 +16,19 @@
 *****************************************************************************/   
 #include <jpype.h>
 
+namespace
+{
+// sets a meaningful TypeError exception message
+template <typename Tintput, typename jType>
+inline void setConversionError(Tintput value, jType min, jType max, const char* dtype)
+{
+	stringstream ss;
+	ss << "Cannot convert value '" << value << "' to Java " << dtype
+	   << ", because it is out of range [" << min << ',' << max << ']';
+	JPEnv::getHost()->setTypeError(ss.str().c_str());
+}
+}
+
 jobject JPPrimitiveType::convertToJavaObject(HostRef* obj)
 {
 	JPCleaner cleaner;
@@ -48,7 +61,9 @@ HostRef* JPByteType::asHostObjectFromObject(jvalue val)
 
 EMatchType JPByteType::canConvertToJava(HostRef* obj)
 {
-	JPCleaner cleaner;
+
+	cout << "can this byte: " << JPEnv::getHost()->describeRef(obj) << " be converted?" << endl;
+
 	if (JPEnv::getHost()->isNone(obj))
 	{
 		return _none;
@@ -82,10 +97,10 @@ jvalue JPByteType::convertToJava(HostRef* obj)
 	jvalue res;
 	if (JPEnv::getHost()->isInt(obj))
 	{
-		jint l = JPEnv::getHost()->intAsInt(obj);;
+		jint l = JPEnv::getHost()->intAsInt(obj);
 		if (l < JPJni::s_minByte || l > JPJni::s_maxByte)
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java byte");
+			setConversionError(l, JPJni::s_minByte, JPJni::s_maxByte, "byte");
 		}
 		res.b = (jbyte)l;
 	}
@@ -94,7 +109,7 @@ jvalue JPByteType::convertToJava(HostRef* obj)
 		jlong l = JPEnv::getHost()->longAsLong(obj);
 		if (l < JPJni::s_minByte || l > JPJni::s_maxByte)
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java byte");
+			setConversionError(l, JPJni::s_minByte, JPJni::s_maxByte, "byte");
 		}
 		res.b = (jbyte)l;
 	}
@@ -180,7 +195,7 @@ jvalue JPShortType::convertToJava(HostRef* obj)
 		jint l = JPEnv::getHost()->intAsInt(obj);;
 		if (l < JPJni::s_minShort || l > JPJni::s_maxShort)
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java short");
+			setConversionError(l, JPJni::s_minShort, JPJni::s_maxShort, "short");
 		}
 
 		res.s = (jshort)l;
@@ -190,7 +205,7 @@ jvalue JPShortType::convertToJava(HostRef* obj)
 		jlong l = JPEnv::getHost()->longAsLong(obj);;
 		if (l < JPJni::s_minShort || l > JPJni::s_maxShort)
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java short");
+			setConversionError(l, JPJni::s_minShort, JPJni::s_maxShort, "short");
 		}
 		res.s = (jshort)l;
 	}
@@ -259,7 +274,7 @@ jvalue JPIntType::convertToJava(HostRef* obj)
 		jint l = JPEnv::getHost()->intAsInt(obj);;
 		if (l < JPJni::s_minInt || l > JPJni::s_maxInt)
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java int");
+			setConversionError(l, JPJni::s_minInt, JPJni::s_maxInt, "int");
 		}
 
 		res.i = (jint)l;
@@ -269,7 +284,7 @@ jvalue JPIntType::convertToJava(HostRef* obj)
 		jlong l = JPEnv::getHost()->longAsLong(obj);;
 		if (l < JPJni::s_minInt || l > JPJni::s_maxInt)
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java int");
+			setConversionError(l, JPJni::s_minInt, JPJni::s_maxInt, "int");
 		}
 		res.i = (jint)l;
 	}
@@ -406,11 +421,11 @@ jvalue JPFloatType::convertToJava(HostRef* obj)
 		double l = JPEnv::getHost()->floatAsDouble(obj);
 		if (l > 0 && (l < JPJni::s_minFloat || l > JPJni::s_maxFloat))
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java float");
+			setConversionError(l, JPJni::s_minFloat, JPJni::s_maxFloat, "float");
 		}
 		else if (l < 0 && (l > -JPJni::s_minFloat || l < -JPJni::s_maxFloat))
 		{
-			JPEnv::getHost()->setTypeError("Cannot convert value to Java float");
+			setConversionError(l, JPJni::s_minFloat, JPJni::s_maxFloat, "float");
 		}
 		res.f = (jfloat)l;
 	}

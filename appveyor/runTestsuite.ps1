@@ -30,7 +30,7 @@ function run {
        throw "Jpype module is not importable - fail"
     }
      
-    nosetests test/jpypetest --all-modules --with-xunit 2>stderr.out
+    nosetests test/jpypetest --all-modules --with-xunit --verbose 2>stderr.out
     $success = $?
     Write-Host "result code of nosetests:" $success
     if(-not(Test-Path $input)) {

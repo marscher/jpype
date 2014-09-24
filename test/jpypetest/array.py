@@ -342,7 +342,7 @@ class ArrayTestCase(common.JPypeTestCase) :
     @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetIntArray(self):
         n = 100
-        a = np.random.randint(-2**31 - 1, 2**31 - 1, size=n).astype(np.int32)
+        a = np.random.randint(-2**31, 2**31 - 1, size=n).astype(np.int32)
         jarr = jpype.JArray(jpype.JInt)(n)
         jarr[:] = a
         self.assertSequenceEqual(a, jarr)

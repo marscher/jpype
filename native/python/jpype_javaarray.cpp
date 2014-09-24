@@ -19,11 +19,15 @@
 
 namespace { // impl detail
 	inline bool is_primitive(const JPTypeName& type) {
+		TRACE_IN("is_primitive");
+		TRACE1("before assignment");
 		const string& n = type.getNativeName();
+		TRACE1("after assignment");
 		if (n.size() != 2) // not an array type
 			return false;
 
 		char t = n.c_str()[1];
+		TRACE2("type char:", t);
 
 		switch(t) {
 			case 'B': case 'S': case 'I': case 'J': case 'F': case 'D': case 'Z': case 'C':
@@ -31,6 +35,7 @@ namespace { // impl detail
 			default:
 				return false;
 		}
+		TRACE_OUT;
 	}
 }
 
@@ -170,6 +175,7 @@ PyObject* JPypeJavaArray::getArraySlice(PyObject* self, PyObject* arg)
 
 PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 {
+	TRACE_IN("JPypeJavaArray::setArraySlice");
 	PyObject* arrayObject;
 	int lo = -1;
 	int hi = -1;
@@ -191,7 +197,9 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 		if (lo > hi) lo = hi;
 
 		JPType* t = a->getType();
+		TRACE(t);
 		const JPTypeName& tn = t->getObjectType();
+		TRACE()
 
 		if(is_primitive(tn))
 		{

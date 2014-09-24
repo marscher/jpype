@@ -61,8 +61,9 @@ install:
 #          python setup.py build_ext -c mingw $env:NUMPY;
 #          python setup.py install
 #        } else { cmd "%CMD_IN_ENV% python setup.py install %NUMPY%" }
-  - cmd: "%CMD_IN_ENV% python setup.py build_ext %NUMPY%"
+  - cmd: "%CMD_IN_ENV% python setup.py build_ext -DTRACING %NUMPY% 2>trace.out"
   - "python setup.py install"
+  - Push-AppveyorArtifact "trace.out"
    
 build: false # Not a C# project, build stuff at the test step instead.
 

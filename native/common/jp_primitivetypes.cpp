@@ -591,7 +591,7 @@ HostRef* JPBooleanType::asHostObjectFromObject(jvalue val)
 
 EMatchType JPBooleanType::canConvertToJava(HostRef* obj)
 {
-	if (JPEnv::getHost()->isInt(obj) || JPEnv::getHost()->isLong(obj))
+	if (JPEnv::getHost()->isInt(obj))
 	{
 		return _implicit;
 	}

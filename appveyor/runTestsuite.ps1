@@ -33,7 +33,8 @@ function run {
      
     nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
     $success = $?
-    Write-Host "result code of nosetests:" $success
+    Push-AppveyorArtifact $stdout
+    
     if(-not(Test-Path $input)) {
         throw "fatal error during testsuite execution"
     }

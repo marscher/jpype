@@ -30,7 +30,7 @@ function run {
        throw "Jpype module is not importable - fail"
     }
      
-    nosetests test/jpypetest --all-modules --with-xunit
+    nosetests test/jpypetest --all-modules --with-xunit 2>stderr.out
     $success = $?
     Write-Host "result code of nosetests:" $success
 
@@ -39,6 +39,7 @@ function run {
     upload $output
     Push-AppveyorArtifact $input
     Push-AppveyorArtifact $output
+    Push-AppveyorArtifact 'stderr.out'
     
     # return exit code of testsuite
     if ( -not $success) {

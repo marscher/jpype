@@ -53,26 +53,29 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   - "%CMD_IN_ENV% pip install nose -rtest-requirements.txt"
+  
+  - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match "\[trace\]") {
+            $env:tracing=1
+        }
+  
   # if numpy has not been opted out, install it.
   - ps: if (-not $env:NUMPY) {conda install --yes --quiet numpy}
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
 #  - ps: if ($env:MINGW) {
 #          $args = $env:NUMPY, "-c gcc"
-#          if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match "\[trace\]") {
-#            $args += "-DTRACING"
-#          }
+#          if($env:tracing) { $args += "-DTRACING"
 #          python setup.py build_ext $args;
 #        } else { cmd "%CMD_IN_ENV% python setup.py build_ext $args" }
 #        python setup.py install
-  - cmd: "%CMD_IN_ENV% python setup.py build_ext -DTRACING %NUMPY% 2>trace.out"
+  - cmd: "%CMD_IN_ENV% python setup.py build_ext -DTRACING %NUMPY% "
   - "python setup.py install"
-  - ps: "Push-AppveyorArtifact 'trace.out'"
+  
    
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - python -c "import jpype; jpype.startJVM(jpype.getDefaultJVMPath());jpype.java.lang.System.out.println('test123')"
+  #- python -c "import jpype; jpype.startJVM(jpype.getDefaultJVMPath());jpype.java.lang.System.out.println('test123')"
   # run testsuite and upload test results to AppVeyor; return exit code of testsuite
   - "powershell ./appveyor/runTestsuite.ps1"
 

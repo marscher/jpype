@@ -167,7 +167,7 @@ function InstallAntChocolatey() {
 }
 
 function main () {
-    InstallAnt
+    InstallAntChocolatey
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallMinicondaPip $env:PYTHON
 }

@@ -58,12 +58,16 @@ install:
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
 #  - ps: if ($env:MINGW) {
-#          python setup.py build_ext -c mingw $env:NUMPY;
-#          python setup.py install
-#        } else { cmd "%CMD_IN_ENV% python setup.py install %NUMPY%" }
+#          $args = $env:NUMPY, "-c gcc"
+#          if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match "\[trace\]") {
+#            $args += "-DTRACING"
+#          }
+#          python setup.py build_ext $args;
+#        } else { cmd "%CMD_IN_ENV% python setup.py build_ext $args" }
+#        python setup.py install
   - cmd: "%CMD_IN_ENV% python setup.py build_ext -DTRACING %NUMPY% 2>trace.out"
   - "python setup.py install"
-  - Push-AppveyorArtifact "trace.out"
+  - ps: "Push-AppveyorArtifact 'trace.out'"
    
 build: false # Not a C# project, build stuff at the test step instead.
 

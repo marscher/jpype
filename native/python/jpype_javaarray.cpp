@@ -228,6 +228,7 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 	PY_STANDARD_CATCH
 
 	return NULL;
+	TRACE_OUT;
 }
 
 PyObject* JPypeJavaArray::setArrayItem(PyObject* self, PyObject* arg)

@@ -15,33 +15,138 @@
 #   
 #*****************************************************************************
 import unittest2 as unittest
+import difflib
+import pprint
 import jpype
 from jpype import JPackage, JArray, JByte, java
-import common
+from . import common
 
-
-def haveNumpy():
-    try:
-        import numpy
-        return True
-    except ImportError:
-        return False
+try:
+    import numpy as np
+    haveNumpy = True
+except ImportError:
+    haveNumpy = False
 
 class ArrayTestCase(common.JPypeTestCase) :
+    
+    def assertSequenceEqual__(self, seq1, seq2,
+                            msg=None, seq_type=None, max_diff=80*8):
+        """
+        taken from unittest2.TestCase.assertSequenceEqual and adopted to run
+        with numpy arrays
+        """
+        if seq_type is not None:
+            seq_type_name = seq_type.__name__
+            if not isinstance(seq1, seq_type):
+                raise self.failureException('First sequence is not a %s: %s'
+                                            % (seq_type_name, safe_repr(seq1)))
+            if not isinstance(seq2, seq_type):
+                raise self.failureException('Second sequence is not a %s: %s'
+                                            % (seq_type_name, safe_repr(seq2)))
+        else:
+            seq_type_name = "sequence"
+
+        differing = None
+        try:
+            len1 = len(seq1)
+        except (TypeError, NotImplementedError):
+            differing = 'First %s has no length.    Non-sequence?' % (
+                    seq_type_name)
+
+        if differing is None:
+            try:
+                len2 = len(seq2)
+            except (TypeError, NotImplementedError):
+                differing = 'Second %s has no length.    Non-sequence?' % (
+                        seq_type_name)
+
+        if differing is None:
+            if haveNumpy:
+                if np.all(seq1 == seq2):
+                    return
+            else:
+                if seq1 == seq2:
+                    return
+
+            seq1_repr = repr(seq1)
+            seq2_repr = repr(seq2)
+            if len(seq1_repr) > 30:
+                seq1_repr = seq1_repr[:30] + '...'
+            if len(seq2_repr) > 30:
+                seq2_repr = seq2_repr[:30] + '...'
+            elements = (seq_type_name.capitalize(), seq1_repr, seq2_repr)
+            differing = '%ss differ: %s != %s\n' % elements
+
+            for i in xrange(min(len1, len2)):
+                try:
+                    item1 = seq1[i]
+                except (TypeError, IndexError, NotImplementedError):
+                    differing += ('\nUnable to index element %d of first %s\n' %
+                                 (i, seq_type_name))
+                    break
+
+                try:
+                    item2 = seq2[i]
+                except (TypeError, IndexError, NotImplementedError):
+                    differing += ('\nUnable to index element %d of second %s\n' %
+                                 (i, seq_type_name))
+                    break
+
+                if item1 != item2:
+                    differing += ('\nFirst differing element %d:\n%s\n%s\n' %
+                                 (i, item1, item2))
+                    break
+            else:
+                if (len1 == len2 and seq_type is None and
+                    type(seq1) != type(seq2)):
+                    # The sequences are the same, but have differing types.
+                    return
+
+            if len1 > len2:
+                differing += ('\nFirst %s contains %d additional '
+                             'elements.\n' % (seq_type_name, len1 - len2))
+                try:
+                    differing += ('First extra element %d:\n%s\n' %
+                                  (len2, seq1[len2]))
+                except (TypeError, IndexError, NotImplementedError):
+                    differing += ('Unable to index element %d '
+                                  'of first %s\n' % (len2, seq_type_name))
+            elif len1 < len2:
+                differing += ('\nSecond %s contains %d additional '
+                             'elements.\n' % (seq_type_name, len2 - len1))
+                try:
+                    differing += ('First extra element %d:\n%s\n' %
+                                  (len1, seq2[len1]))
+                except (TypeError, IndexError, NotImplementedError):
+                    differing += ('Unable to index element %d '
+                                  'of second %s\n' % (len1, seq_type_name))
+        standardMsg = differing
+        diffMsg = '\n' + '\n'.join(
+            difflib.ndiff(pprint.pformat(seq1).splitlines(),
+                          pprint.pformat(seq2).splitlines()))
+
+        standardMsg = self._truncateMessage(standardMsg, diffMsg)
+        msg = self._formatMessage(msg, standardMsg)
+        self.fail(msg)
     
     def setUp(self):
         common.JPypeTestCase.setUp(self)
         self.VALUES = [12234,1234,234,1324,424,234,234,142,5,251,242,35,235,62,
                        1235,46,245132,51, 2, 3, 4]
     
+    @classmethod
+    def setUpClass(self):
+        self.assertItemsEqual = self.assertSequenceEqual__
+        self.assertSequenceEqual = self.assertSequenceEqual__
+    
     def testReadArray(self) :
         t = JPackage("jpype").array.TestArray()
         assert not isinstance(t, JPackage)
         
-        self.assertItemsEqual(self.VALUES, t.i)
+        self.assertSequenceEqual(self.VALUES, t.i)
         
         self.assertEqual(t.i[0], self.VALUES[0])
-        self.assertItemsEqual(self.VALUES[1:-2], t.i[1:-2])
+        self.assertSequenceEqual(self.VALUES[1:-2], t.i[1:-2])
 
     def testStangeBehavior(self) :
         ''' Test for stange crash reported in bug #1089302'''
@@ -60,7 +165,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertEqual(t.i[1], 33)
         self.assertEqual(t.i[2], 34)
         
-        self.assertItemsEqual(t.i[:5], (32, 33, 34 ,1324, 424) )
+        self.assertSequenceEqual(t.i[:5], (32, 33, 34 ,1324, 424) )
         
     def testObjectArraySimple(self) :
         a = JArray(java.lang.String, 1)(2)
@@ -101,7 +206,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertEqual(str(v), 'avcd')
         
     def testByteArrayIntoVector(self):
-        ba = jpype.JArray(jpype.JByte)('123')
+        ba = jpype.JArray(jpype.JByte)(b'123')
         v = jpype.java.util.Vector(1)
         v.add(ba)
         self.assertEqual(len(v), 1)
@@ -111,7 +216,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         expected = [True, False, False, True]
         jarr = jpype.JArray(jpype.JBoolean)(expected)
         
-        self.assertItemsEqual(expected, jarr[:])
+        self.assertSequenceEqual(expected, jarr[:])
 
     def testJArrayConversionChar(self):
         t = JPackage("jpype").array.TestArray()
@@ -129,7 +234,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         for i in xrange(len(expected)):
             buf[i] = expected[i]
         
-        self.assertItemsEqual(expected[:], buf[:])
+        self.assertSequenceEqual(expected[:], buf[:])
 
     def testJArrayConversionShort(self):
         # filter out values, which can not be converted to jshort
@@ -140,7 +245,7 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertItemsEqual(self.VALUES, result)
         
         result = jarr[2:10]
-        self.assertItemsEqual(self.VALUES[2:10], result)
+        self.assertSequenceEqual(self.VALUES[2:10], result)
         
         # TODO: investigate why overflow is being casted on linux, but not on windows
         #with self.assertRaises(jpype._):
@@ -149,48 +254,45 @@ class ArrayTestCase(common.JPypeTestCase) :
     def testJArrayConversionInt(self):
         jarr = jpype.JArray(jpype.JInt)(self.VALUES)
         result = jarr[0 : len(jarr)]
-        self.assertItemsEqual(self.VALUES, result)
+        self.assertSequenceEqual(self.VALUES, result)
         
         result = jarr[2:10]
-        self.assertItemsEqual(self.VALUES[2:10], result)
+        self.assertSequenceEqual(self.VALUES[2:10], result)
     
     def testJArrayConversionLong(self):
         jarr = jpype.JArray(jpype.JLong)(self.VALUES)
         result = jarr[0 : len(jarr)]
-        self.assertItemsEqual(self.VALUES, result)
+        self.assertSequenceEqual(self.VALUES, result)
         
         result = jarr[2:10]
-        self.assertItemsEqual(self.VALUES[2:10], result)
+        self.assertSequenceEqual(self.VALUES[2:10], result)
         
     def testJArrayConversionFloat(self):
         self.VALUES = map(float, self.VALUES)
         jarr = jpype.JArray(jpype.JFloat)(self.VALUES)
         result = jarr[0 : len(jarr)]
-        self.assertItemsEqual(jarr, result)
+        self.assertSequenceEqual(self.VALUES, result)
         
         result = jarr[2:10]
-        self.assertItemsEqual(self.VALUES[2:10], result)
+        self.assertSequenceEqual(self.VALUES[2:10], result)
         
     def testJArrayConversionDouble(self):
         self.VALUES = map(float, self.VALUES)
         jarr = jpype.JArray(jpype.JDouble)(self.VALUES)
-        self.assertItemsEqual(self.VALUES, jarr)
         result = jarr[:]
-        self.assertItemsEqual(self.VALUES, result)
+        self.assertSequenceEqual(self.VALUES, result)
         
         result = jarr[2:10]
-        
-        self.assertEqual(len(self.VALUES[2:10]), len(result))
-        self.assertItemsEqual(self.VALUES[2:10], result)
+        self.assertSequenceEqual(self.VALUES[2:10], result)
         
         # empty slice
         result = jarr[-1:3]
         expected = self.VALUES[-1:3]
-        self.assertItemsEqual(expected, result)
+        self.assertSequenceEqual(expected, result)
         
         result = jarr[3:-2]
         expected = self.VALUES[3:-2]
-        self.assertItemsEqual(expected, result)
+        self.assertSequenceEqual(expected, result)
 
     def testConversionError(self):
         jarr = jpype.JArray(jpype.JInt, 1)(10)
@@ -213,66 +315,59 @@ class ArrayTestCase(common.JPypeTestCase) :
         self.assertEqual(l2, jarr[1])
         self.assertEqual(l3, jarr[2])
         
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
+    @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetFromNPBoolArray(self):
-        import numpy as np
         n = 100
         a = np.random.randint(0, 1, size=n).astype(np.bool)
         jarr = jpype.JArray(jpype.JBoolean)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)
 
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
+    @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetFromNPByteArray(self):
-        import numpy as np
         n = 100
         a = np.random.randint(-128, 127, size=n).astype(np.byte)
         jarr = jpype.JArray(jpype.JByte)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)
 
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
+    @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetFromNPShortArray(self):
-        import numpy as np
         n = 100
         a = np.random.randint(-32768, 32767, size=n).astype(np.short)
         jarr = jpype.JArray(jpype.JShort)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)
         
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
-    def testSetFromNPIntArray(self):
-        import numpy as np
+    @unittest.skipUnless(haveNumpy, "numpy not available")
+    def testSetIntArray(self):
         n = 100
         a = np.random.randint(-2**31 - 1, 2**31 - 1, size=n).astype(np.int32)
         jarr = jpype.JArray(jpype.JInt)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)
         
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
+    @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetFromNPLongArray(self):
-        import numpy as np
         n = 100
         # actuall the lower bound should be -2**63 -1, but raises Overflow error in numpy
         a = np.random.randint(-2**63, 2**63 - 1, size=n).astype(np.int64)
         jarr = jpype.JArray(jpype.JLong)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)
     
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
+    @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetFromNPFloatArray(self):
-        import numpy as np
         n = 100
         a = np.random.random(n).astype(np.float32)
         jarr = jpype.JArray(jpype.JFloat)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)
         
-    @unittest.skipUnless(haveNumpy(), "numpy not available")
+    @unittest.skipUnless(haveNumpy, "numpy not available")
     def testSetFromNPDoubleArray(self):
-        import numpy as np
         n = 100
         a = np.random.random(n).astype(np.float64)
         jarr = jpype.JArray(jpype.JDouble)(n)
         jarr[:] = a
-        self.assertItemsEqual(a, jarr)
+        self.assertSequenceEqual(a, jarr)

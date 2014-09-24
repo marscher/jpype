@@ -1,32 +1,38 @@
 environment:
+
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
-    ANT_HOME: C:\ant
+    ANT_HOME: C:\apache-ant-1.9.4
 
   matrix:
+# with numpy
+    - PYTHON: "C:\\Python27_32"
+      PYTHON_VERSION: "2.7.8"
+      PYTHON_ARCH: "32"
+      JAVA_HOME: "C:\\Program Files (x86)\\Java\\jdk1.8.0"
+      MINGW: "YES"
+
+#    - PYTHON: "C:\\Python27_64"
+#      PYTHON_VERSION: "2.7.8"
+#      PYTHON_ARCH: "64"
+#      JAVA_HOME: "C:\\Program Files\\Java\\jdk1.8.0"
+
+# opt out numpy 
 #    - PYTHON: "C:\\Python27_32"
 #      PYTHON_VERSION: "2.7.8"
 #      PYTHON_ARCH: "32"
+#      NUMPY: "--disable-numpy"
+#      JAVA_HOME: "C:\\Program Files (x86)\\Java\\jdk1.8.0"
 
-    - PYTHON: "C:\\Python27_64"
-      PYTHON_VERSION: "2.7.8"
-      PYTHON_ARCH: "64"
 
-#    - PYTHON: "C:\\Python34_32"
-#      PYTHON_VERSION: "3.4.1"
-#      PYTHON_ARCH: "32"
-
-#    - PYTHON: "C:\\Python34_64"
-#      PYTHON_VERSION: "3.4.1"
+#    - PYTHON: "C:\\Python27_64"
+#      PYTHON_VERSION: "2.7.8"
 #      PYTHON_ARCH: "64"
-
-cache:
-  - C:\Python*
-  - C:\ant
-  - C:\apache-ant-1.9.4
+#      NUMPY: "--disable-numpy"
+#      JAVA_HOME: "C:\\Program Files\\Java\\jdk1.8.0"
 
 install:
   # Install Python (from the official .msi of http://python.org) and pip when
@@ -36,7 +42,7 @@ install:
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;C:\\ant\\bin;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%ANT_HOME%\\bin;C:\\mingw\\bin;%PATH%"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -46,15 +52,21 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - "%CMD_IN_ENV% pip install wheel nose"
-  - "%CMD_IN_ENV% pip install -r test-requirements.txt" # -r dev-requirements.txt
-
+  - "%CMD_IN_ENV% pip install nose -rtest-requirements.txt"
+  # if numpy has not been opted out, install it.
+  - ps: if (-not $env:NUMPY) {conda install --yes --quiet numpy}
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
-  - "%CMD_IN_ENV% python setup.py install"
+#  - ps: if ($env:MINGW) {
+#          python setup.py build_ext -c mingw $env:NUMPY;
+#          python setup.py install
+#        } else { cmd "%CMD_IN_ENV% python setup.py install %NUMPY%" }
+  - cmd: "%CMD_IN_ENV% python setup.py install %NUMPY%"
+   
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:
+  - python -c "import jpype; jpype.startJVM(jpype.getDefaultJVMPath());jpype.java.lang.System.out.println('test123')"
   # run testsuite and upload test results to AppVeyor; return exit code of testsuite
   - "powershell ./appveyor/runTestsuite.ps1"
 

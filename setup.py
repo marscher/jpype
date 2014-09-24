@@ -148,7 +148,7 @@ class my_build_ext(build_ext):
     """
     
     # extra compile args
-    copt = {'msvc': ['/EHsc'],
+    copt = {'msvc': ['/EHa'],
             'gcc' : [],
             'mingw32' : [],
            }
@@ -226,6 +226,6 @@ setup(
     },
     extras_require = {'numpy' : ['numpy>=1.6']},
     cmdclass={'build_ext': my_build_ext},
-    #zip_safe=False,
+    zip_safe=False,
     ext_modules=[jpypeLib],
 )

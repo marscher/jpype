@@ -25,21 +25,10 @@ enum EMatchType
 	_exact
 };
 
-std::ostream& operator << (std::ostream& os, EMatchType t) {
-	switch(t) {
-	case _none:
-		os << "[none]";
-	case _explicit:
-		os << "[explicit]";
-	case _implicit:
-		os << "[implicit]";
-	case _exact:
-		os << "[exact]";
-	default:
-		os << "[unknown]";
-	}
-	return os;
-}
+/**
+ * allow output for ematchtype
+ */
+std::ostream& operator << (std::ostream& os, EMatchType t);
 
 // predeclaration of PyObject
 #ifndef PyObject_HEAD

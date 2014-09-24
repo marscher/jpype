@@ -197,9 +197,10 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 		if (lo > hi) lo = hi;
 
 		JPType* t = a->getType();
-		TRACE(t);
+		TRACE1(t);
+		TRACE1("befor ref assignment");
 		const JPTypeName& tn = t->getObjectType();
-		TRACE()
+		TRACE1(tn);
 
 		if(is_primitive(tn))
 		{

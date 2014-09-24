@@ -21,14 +21,12 @@ function upload($file) {
 }
 
 function run {
-    #$env:JAVA_HOME=C:/jre
     cd $env:APPVEYOR_BUILD_FOLDER
     $stylesheet =  "test/transform_xunit_to_appveyor.xsl"
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
     $importable=python -c "import _jpype; print _jpype.isStarted()"
     if( -not $importable) {
-       #python -vvv -c "import _jpype"
        throw "Jpype module is not importable - fail"
     }
      

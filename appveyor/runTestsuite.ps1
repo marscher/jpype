@@ -25,12 +25,13 @@ function run {
     $stylesheet =  "test/transform_xunit_to_appveyor.xsl"
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
-    $importable=python -c "import _jpype; print _jpype.isStarted()"
+    $stdout = "output.txt"
+    $importable=python -c "import _jpype"
     if( -not $importable) {
        throw "Jpype module is not importable - fail"
     }
      
-    nosetests test/jpypetest --all-modules --with-xunit --verbose 2>stderr.out
+    nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
     $success = $?
     Write-Host "result code of nosetests:" $success
     if(-not(Test-Path $input)) {
@@ -41,7 +42,6 @@ function run {
     upload $output
     Push-AppveyorArtifact $input
     Push-AppveyorArtifact $output
-    Push-AppveyorArtifact 'stderr.out'
     
     # return exit code of testsuite
     if ( -not $success) {

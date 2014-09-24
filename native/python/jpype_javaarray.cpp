@@ -19,7 +19,7 @@
 
 namespace { // impl detail
 	inline bool is_primitive(char t) {
-		TRACE_IN;
+		TRACE_IN("is_primitive");
 		TRACE2("is_primitive:", t);
 		switch(t) {
 			case 'B': case 'S': case 'I': case 'J': case 'F': case 'D': case 'Z': case 'C':
@@ -165,7 +165,7 @@ PyObject* JPypeJavaArray::getArraySlice(PyObject* self, PyObject* arg)
 
 PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 {
-	TRACE_IN;
+	TRACE_IN("JPypeJavaArray::setArraySlice");
 	PyObject* arrayObject;
 	int lo = -1;
 	int hi = -1;
@@ -214,7 +214,7 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 	PY_STANDARD_CATCH
 
 	return NULL;
-	TRACE_OUT
+	TRACE_OUT;
 }
 
 PyObject* JPypeJavaArray::setArrayItem(PyObject* self, PyObject* arg)

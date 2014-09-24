@@ -18,16 +18,19 @@
 #include <jpype_python.h>
 
 namespace { // impl detail
-	inline bool is_primitive(char t) {
-		TRACE_IN("is_primitive");
-		TRACE2("is_primitive:", t);
+	inline bool is_primitive(const JPTypeName& type) {
+		const string& n = type.getNativeName();
+		if (n.size() != 2) // not an array type
+			return false;
+
+		char t = n.c_str()[1];
+
 		switch(t) {
 			case 'B': case 'S': case 'I': case 'J': case 'F': case 'D': case 'Z': case 'C':
 				return true;
 			default:
 				return false;
 		}
-		TRACE_OUT;
 	}
 }
 
@@ -137,8 +140,10 @@ PyObject* JPypeJavaArray::getArraySlice(PyObject* self, PyObject* arg)
 		else if (hi > length) hi = length;
 		if (lo > hi) lo = hi;
 
-		const string& name = a->getType()->getObjectType().getComponentName().getNativeName();
-		if(is_primitive(name[0]))
+		JPType* t = a->getType();
+		const JPTypeName& tn = t->getObjectType();
+
+		if(is_primitive(tn))
 		{
 			// for primitive types, we have fast sequence generation available
 			return a->getSequenceFromRange(lo, hi);
@@ -165,7 +170,6 @@ PyObject* JPypeJavaArray::getArraySlice(PyObject* self, PyObject* arg)
 
 PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 {
-	TRACE_IN("JPypeJavaArray::setArraySlice");
 	PyObject* arrayObject;
 	int lo = -1;
 	int hi = -1;
@@ -186,9 +190,10 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 		else if (hi > length) hi = length;
 		if (lo > hi) lo = hi;
 
-		const string& name = a->getType()->getObjectType().getComponentName().getNativeName();
-		TRACE2("component type of array:", name);
-		if(is_primitive(name[0]))
+		JPType* t = a->getType();
+		const JPTypeName& tn = t->getObjectType();
+
+		if(is_primitive(tn))
 		{
 			// for primitive types, we have fast setters available
 			a->setRange(lo, hi, sequence);
@@ -214,7 +219,6 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 	PY_STANDARD_CATCH
 
 	return NULL;
-	TRACE_OUT;
 }
 
 PyObject* JPypeJavaArray::setArrayItem(PyObject* self, PyObject* arg)

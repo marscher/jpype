@@ -19,6 +19,7 @@
 
 namespace { // impl detail
 	inline bool is_primitive(char t) {
+		TRACE2("is_primitive:", t);
 		switch(t) {
 			case 'B': case 'S': case 'I': case 'J': case 'F': case 'D': case 'Z': case 'C':
 				return true;
@@ -184,7 +185,7 @@ PyObject* JPypeJavaArray::setArraySlice(PyObject* self, PyObject* arg)
 		if (lo > hi) lo = hi;
 
 		const string& name = a->getType()->getObjectType().getComponentName().getNativeName();
-
+		TRACE2("component type of array:", name);
 		if(is_primitive(name[0]))
 		{
 			// for primitive types, we have fast setters available

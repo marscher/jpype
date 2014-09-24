@@ -41,9 +41,11 @@ bool PythonHostEnvironment::isRefNull(void* d)
 string PythonHostEnvironment::describeRef(HostRef* ref)
 {
 	stringstream out;
-	
+	PyObject* str = PyObject_REPR(UNWRAP(ref));
+	const char* s = PyString_AsString(str);
+	out << s;
+	Py_DecRef(str);
 	return out.str();
-	
 }
 
 void* PythonHostEnvironment::gotoExternal()

@@ -31,9 +31,9 @@ function run {
        throw "Jpype module is not importable - fail"
     }
      
-    nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
+    nosetests test/jpypetest --all-modules --with-xunit #--verbose 1>$stdout 2>&1
     $success = $?
-    Push-AppveyorArtifact $stdout
+    #Push-AppveyorArtifact $stdout
     
     if(-not(Test-Path $input)) {
         throw "fatal error during testsuite execution"

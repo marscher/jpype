@@ -23,7 +23,7 @@ namespace { // impl detail
 		TRACE1("before assignment");
 		const string& n = type.getNativeName();
 		TRACE1("after assignment");
-		if (n.size() != 2) // not an array type
+		if (n.size() != 2) // not an array type, e.g "[B" is a byte array
 			return false;
 
 		char t = n.c_str()[1];

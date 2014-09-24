@@ -33,7 +33,9 @@ function run {
     nosetests test/jpypetest --all-modules --with-xunit 2>stderr.out
     $success = $?
     Write-Host "result code of nosetests:" $success
-
+    if(-not(Test-Path $input)) {
+        throw "fatal error during testsuite execution"
+    }
     xslt_transform $input $stylesheet $output
 
     upload $output

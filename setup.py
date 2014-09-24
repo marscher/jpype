@@ -175,13 +175,13 @@ class my_build_ext(build_ext):
     """
     
     # extra compile args
-    copt = {'msvc': ['/EHa', '-Zi'],
+    copt = {'msvc': ['/EHa', ],
             'unix' : ['-ggdb'],
             'mingw32' : [],
            }
     # extra link args
     lopt = {
-            'msvc': ['-debug'],
+            'msvc': [],
             'mingw32' : [],
            }
     

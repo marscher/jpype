@@ -16,6 +16,17 @@
 *****************************************************************************/   
 #include <jpype.h>
 
+// impl detail
+namespace {
+	void handleConversionError(HostRef* v, int index, EMatchType matchType) {
+		stringstream ss;
+		string str = JPEnv::getHost()->describeRef(v);
+		ss << "Unable to convert value at index " << index << ": " << str
+				<< ". Match with type: " << matchType;
+		RAISE(JPypeException, ss.str());
+	}
+}
+
 JPArray::JPArray(const JPTypeName& name, jarray inst)
 {
 	m_Class = JPTypeManager::findArrayClass(name);
@@ -42,7 +53,7 @@ vector<HostRef*> JPArray::getRange(int start, int stop)
 	
 	return res;
 	TRACE_OUT;
-}	
+}
 
 PyObject* JPArray::getSequenceFromRange(int start, int stop)
 {
@@ -74,11 +85,7 @@ void JPArray::setRange(int start, int stop, vector<HostRef*>& val)
 		EMatchType matchType = compType->canConvertToJava(v);
 		if (matchType <= _explicit)
 		{
-			stringstream ss;
-			string str = JPEnv::getHost()->describeRef(v);
-			ss << "Unable to convert value at index " << i << ": " << str
-					<< ". Match with type: " << matchType;
-			RAISE(JPypeException, ss.str());
+			handleConversionError(v, i, matchType);
 		}
 	}	
 			
@@ -106,9 +113,10 @@ void JPArray::setRange(int start, int stop, PyObject* sequence)
 void JPArray::setItem(int ndx, HostRef* val)
 {
 	JPType* compType = m_Class->getComponentType();
-	if (compType->canConvertToJava(val) <= _explicit)
+	EMatchType matchType = compType->canConvertToJava(val);
+	if (matchType <= _explicit)
 	{
-		RAISE(JPypeException, "Unable to convert.");
+		handleConversionError(val, ndx, matchType);
 	}	
 	
 	compType->setArrayItem(m_Object, ndx, val);

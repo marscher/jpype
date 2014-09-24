@@ -26,17 +26,17 @@ function run {
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
     $stdout = "output.txt"
-    $importable=python -c "import _jpype"
-    if( -not $importable) {
+    python -c "import _jpype"
+    if(-not $?) {
        throw "Jpype module is not importable - fail"
     }
      
-    nosetests test/jpypetest --all-modules --with-xunit #--verbose 1>$stdout 2>&1
+    nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
     $success = $?
-    #Push-AppveyorArtifact $stdout
+    Push-AppveyorArtifact $stdout
     
     if(-not(Test-Path $input)) {
-        throw "fatal error during testsuite execution"
+        throw "fatal error during testsuite execution. Nose didnt succeed in writing output"
     }
     xslt_transform $input $stylesheet $output
 

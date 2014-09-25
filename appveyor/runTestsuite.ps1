@@ -33,15 +33,16 @@ function run {
     }
     
     if ($env:tracing) {
+        $artifact=$trace
         nosetests test/jpypetest --all-modules --with-xunit --verbose 2>$trace
     } else {
+        $artifact=$stdout
         nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
     }
     $success = $?
-    Push-AppveyorArtifact $stdout
-    Push-AppveyorArtifact $trace
+    Push-AppveyorArtifact $artifact
 
-    
+
     if(-not(Test-Path $input)) {
         throw "fatal error during testsuite execution. Nose didnt succeed in writing output"
     }

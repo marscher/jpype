@@ -55,7 +55,7 @@ install:
   - "%CMD_IN_ENV% pip install nose -rtest-requirements.txt > nul"
   
   - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match "\[trace\]") {
-            $env:tracing=1
+            $env:tracing=1;
             write-host "enabled trace mode"
         }
   

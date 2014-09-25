@@ -33,6 +33,14 @@ std::ostream& operator << (std::ostream& os, EMatchType t)
 	return os;
 }
 
+std::ostream& operator << (std::ostream& os, const JPTypeName& t) {
+	os << "[Typename native=" << t.getNativeName()
+	   << ", simple=" << t.getSimpleName()
+	   << ", etype=" << t.getType() << "]";
+	return os;
+}
+
+
 static string convertToNativeClassName(const string& str)
 {
 	// simple names are of the form :

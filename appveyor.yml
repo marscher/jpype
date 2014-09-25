@@ -56,15 +56,16 @@ install:
   
   - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match "\[trace\]") {
             $env:tracing=1
+            host-write "enabled trace mode"
         }
   
   # if numpy has not been opted out, install it.
   - ps: if (-not $env:NUMPY) {conda install --yes --quiet numpy}
   - "ant -f test\\build.xml"
   # Build the compiled extension and run the project tests
-  - ps: $args=@($env:NUMPY)
+  - ps: $args=@($env:NUMPY);
         if($env:tracing) { $args += "-DTRACING" }
-        if ($env:MINGW) {$args += "-c gcc"
+        if ($env:MINGW) {$args += "-c gcc";
             python setup.py build_ext $args;
         } else { cmd "%CMD_IN_ENV% python setup.py build_ext $args" }
         python setup.py install

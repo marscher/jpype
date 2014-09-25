@@ -26,14 +26,21 @@ function run {
     $input = "nosetests.xml"
     $output = "test/transformed.xml"
     $stdout = "output.txt"
+    $trace = "trace.txt"
     python -c "import _jpype"
     if(-not $?) {
        throw "Jpype module is not importable - fail"
     }
-     
-    nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
+    
+    if ($env:tracing) {
+        nosetests test/jpypetest --all-modules --with-xunit --verbose 2>$trace
+    } else {
+        nosetests test/jpypetest --all-modules --with-xunit --verbose 1>$stdout 2>&1
+    }
     $success = $?
     Push-AppveyorArtifact $stdout
+    Push-AppveyorArtifact $trace
+
     
     if(-not(Test-Path $input)) {
         throw "fatal error during testsuite execution. Nose didnt succeed in writing output"

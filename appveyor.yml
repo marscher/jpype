@@ -68,7 +68,7 @@ install:
         if ($env:MINGW) {$args += "-c gcc";
             python setup.py build_ext $args;
         } else { "%CMD_IN_ENV% python -W ignore setup.py build_ext $args" }
-        python setup.py -W install
+        python -W ignore setup.py install
 
 #  - cmd: "%CMD_IN_ENV% python setup.py build_ext %NUMPY% "
 #  - "python setup.py install"

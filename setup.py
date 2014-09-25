@@ -161,7 +161,7 @@ def _parallelCCompile(self, sources, output_dir=None, macros=None,
     return objects
 
 # monkey-patch for parallel compilation
-distutils.ccompiler.CCompiler.compile = _parallelCCompile
+#distutils.ccompiler.CCompiler.compile = _parallelCCompile
 
 class my_build_ext(build_ext):
     """
@@ -175,7 +175,7 @@ class my_build_ext(build_ext):
     """
     
     # extra compile args
-    copt = {'msvc': ['/EHa', ],
+    copt = {'msvc': ['/EHa', '/W4' ],
             'unix' : ['-ggdb'],
             'mingw32' : [],
            }
@@ -195,7 +195,7 @@ class my_build_ext(build_ext):
             
         build_ext.initialize_options(self)
         
-    def build_extensions(self):
+    def _set_cflags(self):
         # set compiler flags
         c = self.compiler.compiler_type
         if self.copt.has_key(c):
@@ -204,7 +204,9 @@ class my_build_ext(build_ext):
         if self.lopt.has_key(c):
             for e in self.extensions:
                 e.extra_link_args = self.lopt[ c ]
-
+        
+    def build_extensions(self):
+        self._set_cflags()
         # handle numpy
         if not disabled_numpy:
             try:

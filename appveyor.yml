@@ -67,7 +67,7 @@ install:
         if($env:tracing) { $args += "-DTRACING" }
         if ($env:MINGW) {$args += "-c gcc";
             python setup.py build_ext $args;
-        } else { "%CMD_IN_ENV% python -W setup.py build_ext $args" }
+        } else { "%CMD_IN_ENV% python -W ignore setup.py build_ext $args" }
         python setup.py -W install
 
 #  - cmd: "%CMD_IN_ENV% python setup.py build_ext %NUMPY% "

@@ -175,7 +175,7 @@ class my_build_ext(build_ext):
     """
     
     # extra compile args
-    copt = {'msvc': ['/EHa', '/W4' ],
+    copt = {'msvc': ['/EHa', '/W3' ],
             'unix' : ['-ggdb'],
             'mingw32' : [],
            }

@@ -56,7 +56,7 @@ install:
   
   - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match "\[trace\]") {
             $env:tracing=1
-            host-write "enabled trace mode"
+            write-host "enabled trace mode"
         }
   
   # if numpy has not been opted out, install it.

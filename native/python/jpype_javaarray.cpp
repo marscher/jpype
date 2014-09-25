@@ -20,6 +20,7 @@
 namespace { // impl detail
 	inline bool is_primitive(const JPTypeName& type) {
 		TRACE_IN("is_primitive");
+		TRACE1(type);
 		TRACE1("before assignment");
 		const string& n = type.getNativeName();
 		TRACE1("after assignment");

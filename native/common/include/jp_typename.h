@@ -107,6 +107,12 @@ public :
 		return m_Type >= _object;
 	}
 
+	std::ostream& operator << (std::ostream& os) {
+		os << "[Typename native=" << m_NativeName << ", simple=" << m_SimpleName
+		   << ", etype=" << m_Type << "]";
+		return os;
+	}
+
 private :
 	string m_SimpleName;
 	string m_NativeName;

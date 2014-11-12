@@ -81,6 +81,9 @@ elif sys.platform == 'darwin':
     platform_specific['define_macros'] = [('MACOSX', 1)]
     if found_jni:
         platform_specific['include_dirs'] += [os.path.join(java_home, 'include', 'darwin')]
+# TODO: add flags for 10.9 clang++ specific issues! but only if really using clang, gcc will fail with this flags
+#    platform_specific['extra_compile_args'] += ['-mmacosx-version-min=10.6']
+#    platform_specific['extra_link_args'] += ['-stdlib=libstdc++']
 else: # linux etc.
     platform_specific['libraries'] = ['dl']
     if found_jni:
@@ -100,7 +103,7 @@ class my_build_ext(build_ext):
     2. handle compiler flags for different compilers via a dictionary.
     3. try to disable warning ‘-Wstrict-prototypes’ is valid for C/ObjC but not for C++
     """
-    
+
     # extra compile args
     copt = {'msvc': ['/EHsc'],
             'unix' : ['-ggdb'],
@@ -116,11 +119,17 @@ class my_build_ext(build_ext):
     def initialize_options(self, *args):
         """omit -Wstrict-prototypes from CFLAGS since its only valid for C code."""
         from distutils.sysconfig import get_config_vars
-        (opt,) = get_config_vars('OPT')
-        if opt:
-            os.environ['OPT'] = ' '.join(flag for flag in opt.split() 
-                                         if flag != '-Wstrict-prototypes')
-            
+        global_conf = get_config_vars()
+
+        for k in ('CFLAGS', 'PY_CFLAGS', 'OPT'):
+            try:
+                v = global_conf[k]
+                if v:
+                     v =  ' '.join(flag for flag in v.split() 
+                                          if flag != '-Wstrict-prototypes')
+                     global_conf[k] = v
+            except KeyError:
+                pass
         build_ext.initialize_options(self)
         
     def _set_cflags(self):
@@ -128,10 +137,10 @@ class my_build_ext(build_ext):
         c = self.compiler.compiler_type
         if self.copt.has_key(c):
            for e in self.extensions:
-               e.extra_compile_args = self.copt[ c ]
+               e.extra_compile_args += self.copt[c]
         if self.lopt.has_key(c):
             for e in self.extensions:
-                e.extra_link_args = self.lopt[ c ]
+                e.extra_link_args += self.lopt[c]
         
     def build_extensions(self):
         self._set_cflags()

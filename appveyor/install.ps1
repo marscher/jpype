@@ -7,6 +7,7 @@ $BASE_URL = "https://www.python.org/ftp/python/"
 $GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
 $GET_PIP_PATH = "C:\get-pip.py"
 
+set-psdebug -trace 2
 
 function DownloadPython ($python_version, $platform_suffix) {
     $webclient = New-Object System.Net.WebClient

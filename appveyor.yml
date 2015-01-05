@@ -7,9 +7,9 @@ environment:
     ANT_HOME: C:\ant
 
   matrix:
-#    - PYTHON: "C:\\Python27_32"
-#      PYTHON_VERSION: "2.7.8"
-#      PYTHON_ARCH: "32"
+    - PYTHON: "C:\\Python27_32"
+      PYTHON_VERSION: "2.7.8"
+      PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python27_64"
       PYTHON_VERSION: "2.7.8"

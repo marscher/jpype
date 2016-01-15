@@ -19,14 +19,13 @@ addons:
     - ant
 
 env:
-  - JPYPE_GCOV=1
-  matrix:
+    matrix:
     # one build with and without numpy support (opt numpy out)
     - NUMPY="--install-option=--disable-numpy"
     - NUMPY=""
 
 install:
-  - pip install . $NUMPY
+  - JPYPE_GCOV=1 pip install . $NUMPY
   - pip install -r test-requirements.txt
   - ant -f test/build.xml
 

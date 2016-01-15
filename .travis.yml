@@ -19,6 +19,7 @@ addons:
     - ant
 
 env:
+  - JPYPE_GCOV=1
   matrix:
     # one build with and without numpy support (opt numpy out)
     - NUMPY="--install-option=--disable-numpy"
@@ -32,3 +33,5 @@ install:
 script:
   - python -c "import jpype"
   - python test/testsuite.py
+after_success:
+  - gcovr -v

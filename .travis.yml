@@ -17,7 +17,6 @@ addons:
   apt:
     packages:
     - ant
-    - govr
 
 env:
     matrix:
@@ -27,7 +26,7 @@ env:
 
 install:
   - JPYPE_GCOV=1 pip install . $NUMPY
-  - pip install -r test-requirements.txt
+  - pip install -r test-requirements.txt gcovr
   - ant -f test/build.xml
 
 script:

@@ -128,6 +128,8 @@ class my_build_ext(build_ext):
     def _set_cflags(self):
         # set compiler flags
         c = self.compiler.compiler_type
+        if 'JPYPE_GCOV' in os.environ and c == 'unix':
+            self.copt[c].extend(['-fprofile-arcs', '-ftest-coverage', '-O0', '-g', '--coverage'])
         if c in self.copt:
             for e in self.extensions:
                 e.extra_compile_args = self.copt[ c ]

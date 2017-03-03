@@ -16,6 +16,7 @@
 #*****************************************************************************
 import _jpype
 from ._pykeywords import KEYWORDS
+from .thread_util import thread_context, wrap_in_thread_context
 
 
 _CLASSES = {}
@@ -48,7 +49,7 @@ def _initialize():
 def registerClassCustomizer(c):
     _CUSTOMIZERS.append(c)
 
-
+@wrap_in_thread_context
 def JClass(name):
     jc = _jpype.findClass(name)
     if jc is None:
@@ -66,15 +67,15 @@ def _getClassFor(javaClass):
     _CLASSES[name] = pyJavaClass
     return pyJavaClass
 
-
+@wrap_in_thread_context
 def _javaNew(self, *args):
     return object.__new__(self)
 
-
+@wrap_in_thread_context
 def _javaExceptionNew(self, *args):
     return Exception.__new__(self)
 
-
+@wrap_in_thread_context
 def _javaInit(self, *args):
     object.__init__(self)
 
@@ -85,7 +86,7 @@ def _javaInit(self, *args):
         self.__javaobject__ = self.__class__.__javaclass__.newClassInstance(
             *args)
 
-
+@wrap_in_thread_context
 def _javaGetAttr(self, name):
     try:
         r = object.__getattribute__(self, name)
@@ -122,6 +123,7 @@ class _MetaClassForMroOverride(type):
         return _mro_override_topsort(cls)
 
 class _JavaClass(type):
+    @wrap_in_thread_context
     def __new__(cls, jc):
         bases = []
         name = jc.getName()

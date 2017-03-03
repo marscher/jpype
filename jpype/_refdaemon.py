@@ -17,9 +17,12 @@
 import threading
 
 import _jpype
+from jpype.thread_util import thread_context
+
 
 def startJava():
-    _jpype.startReferenceQueue(1)
+    with thread_context():
+        _jpype.startReferenceQueue(1)
 
 def startPython():
     def _run():
@@ -29,4 +32,5 @@ def startPython():
         threading.Thread(target=_run).start()
 
 def stop():
-    _jpype.stopReferenceQueue()
+    with thread_context():
+        _jpype.stopReferenceQueue()

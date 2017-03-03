@@ -40,13 +40,18 @@ def setUsePythonThreadForDeamon(v):
 def isJVMStarted() :
     return _jpype.isStarted()
 
-def startJVM(jvm, *args):
+def startJVM(jvm=None, *args):
     """
     Starts a Java Virtual Machine
 
-    :param jvm:  Path to the jvm library file (libjvm.so, jvm.dll, ...)
+    :param jvm:  Path to the jvm library file (libjvm.so, jvm.dll, ...), if None is given, try to obtain
     :param args: Arguments to give to the JVM
     """
+    if jvm is None:
+        try:
+            jvm = get_default_jvm_path()
+        except ValueError:
+            raise RuntimeError("no jvm can be found using 'get_default_jvm', please specify one.")
     _jpype.startup(jvm, tuple(args), True)
     _jclass._initialize()
     _jarray._initialize()

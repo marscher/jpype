@@ -30,7 +30,10 @@ from . import _jcustomizer
 from . import _jinit
 from . import _pykeywords
 
-from ._jvmfinder import *
+from ._jvmfinder import (
+    getDefaultJVMPath, get_default_jvm_path,
+    JVMNotFoundException, JVMNotSupportedException
+)
 
 # This import is required to bootstrap importlib, _jpype uses importlib.util
 # but on some systems it may not load properly from C.  To make sure it gets

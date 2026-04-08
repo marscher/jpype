@@ -20,6 +20,12 @@ import datetime
 import decimal
 from . import _jclass
 from . import _jcustomizer
+from typing import (Protocol, runtime_checkable,
+                    Sequence, Mapping, Set,
+    # fixme: these two are only used in testing, we should remove them.
+                    SupportsIndex,  # noqa
+                    SupportsFloat,  # noqa
+                    )
 
 # Copies of all private base types for reference
 _JClass = _jpype._JClass
@@ -32,15 +38,6 @@ _JChar = _jpype._JChar
 _JBoolean = _jpype._JBoolean
 _JArray = _jpype._JArray
 _JBuffer = _jpype._JBuffer
-
-from typing import (Protocol, runtime_checkable,
-                    Sequence, Mapping, Set,
-    # fixme: these two are only used in testing, we should remove them.
-                    SupportsIndex,  # noqa
-                    SupportsFloat,  # noqa
-                    )
-
-# Types we need
 
 
 @runtime_checkable

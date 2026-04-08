@@ -27,7 +27,7 @@ from ._core import (
     JVMNotFoundException, JVMNotSupportedException,
     JVMNotRunning
 )
-from . import _core
+from . import _core # fixme: do we need this?
 from ._gui import setupGuiEnvironment, shutdownGuiEnvironment
 from ._classpath import addClassPath, getClassPath
 from ._jclass import JClass, JInterface, JOverride
@@ -50,16 +50,32 @@ from . import _jio          # lgtm [py/import-own-module]
 from . import protocol      # lgtm [py/import-own-module]
 from . import _jthread      # lgtm [py/import-own-module]
 
-__all__ = ['java', 'javax']
-__all__.extend(_jinit.__all__)  # type: ignore[name-defined]
+__all__ = [
+    'onJVMStart',
+    # core:
+    'isJVMStarted', 'startJVM', 'shutdownJVM',
+    'getDefaultJVMPath', 'getJVMVersion',
+    'isThreadAttachedToJVM', 'attachThreadToJVM',
+    'detachThreadFromJVM', 'synchronized',
+    'JVMNotFoundException', 'JVMNotSupportedException', 'JVMNotRunning',
+    # gui:
+    'setupGuiEnvironment', 'shutdownGuiEnvironment',
+    # classpath:
+    'addClassPath', 'getClassPath',
+    # jclass:
+    'JClass', 'JInterface', 'JOverride',
+    # types:
+    'JArray', 'JBoolean', 'JByte', 'JChar', 'JShort',
+    'JInt', 'JLong', 'JFloat', 'JDouble', 'JString', 'JObject', 'JException',
+    # protocol:
+    'JImplementationFor', 'JConversion',
+    'JProxy', 'JImplements',
+    'JPackage',
+    # modules:
+    'protocol','nio', 'types',
+    'java', 'javax']
+
 __all__.extend(_core.__all__)
-__all__.extend(_classpath.__all__)  # type: ignore[name-defined]
-__all__.extend(types.__all__)  # type: ignore[name-defined]
-__all__.extend(_jproxy.__all__)  # type: ignore[name-defined]
-__all__.extend(_jpackage.__all__)  # type: ignore[name-defined]
-__all__.extend(_jclass.__all__)  # type: ignore[name-defined]
-__all__.extend(_jcustomizer.__all__)  # type: ignore[name-defined]
-__all__.extend(_gui.__all__)  # type: ignore[name-defined]
 
 __version__ = "1.6.1.dev0"
 __version_info__ = __version__.split('.')
@@ -70,6 +86,7 @@ __version_info__ = __version__.split('.')
 #  these two are going to have to go away.
 java = JPackage("java", strict=True)
 javax = JPackage("javax", strict=True)
+# todo: try to replace them with the modern system.
 
 JMethod = _jpype._JMethod
 JField = _jpype._JField

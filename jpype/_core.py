@@ -31,8 +31,7 @@ from . import _jinit
 from . import _pykeywords
 
 from ._jvmfinder import (
-    getDefaultJVMPath, get_default_jvm_path,
-    JVMNotFoundException, JVMNotSupportedException
+    getDefaultJVMPath, JVMNotFoundException, JVMNotSupportedException
 )
 
 # This import is required to bootstrap importlib, _jpype uses importlib.util

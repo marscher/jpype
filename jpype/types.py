@@ -33,7 +33,7 @@ Example:
 """
 # import package to get minimum types needed to use module.
 import _jpype
-from ._jclass import JClass, JInterface, JOverride
+from ._jclass import JClass
 from ._jobject import JObject
 from ._jarray import JArray
 from ._jexception import JException

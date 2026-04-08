@@ -23,7 +23,7 @@ This module contains overloaded Pickler and Unpickler classes that operate
 on Java classes. Pickling of Java objects is restricted to classes
 that implement Serializable.  Mixed pickle files containing both
 Java and Python objects are allowed.  Only one copy of each Java object
-will appear in the pickle file even it is appears multiple times in the
+will appear in the pickle file even it appears multiple times in the
 data structure.
 
 JPicklers and JUnpickler use Java ObjectOutputStream and ObjectInputStream

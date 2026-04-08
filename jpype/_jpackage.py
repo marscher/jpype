@@ -46,9 +46,9 @@ class JPackage(_jpype._JPackage, metaclass=_JPackageMeta):
 
     Under some situations such as a missing jar file, the resulting object
     will be a JPackage object rather than the expected java class. This
-    results in rather challanging debugging messages. Due to this 
+    results in rather challenging debugging messages. Due to this
     restriction, the ``jpype.imports`` module is preferred. To prevent these
-    types of errors, a package can be declares as ``strict`` which prevents
+    types of errors, a package can be declared as ``strict`` which prevents
     expanding package names that do not comply with Java package name
     conventions.
 

@@ -48,7 +48,7 @@ def JOverride(*args, **kwargs):
 
 class JClassMeta(type):
     def __instancecheck__(self, other):
-        return type(other) == _jpype._JClass
+        return type(other) is _jpype._JClass
 
 
 class JClass(_jpype._JClass, metaclass=JClassMeta):

@@ -21,7 +21,11 @@ __all__ = ['convertToDirectBuffer']
 
 
 def convertToDirectBuffer(obj):
-    __doc__ = '''Efficiently convert all array.array and numpy ndarray types, string and unicode to java.nio.Buffer objects. If the passed object is readonly (i.e. bytes or a readonly memoryview) the returned ByteBuffer will be a readonly Buffer object. Otherwise a writable Buffer is returned.'''
+    """Efficiently convert all array.array and numpy ndarray types, string and unicode to java.nio.Buffer objects.
+
+    If the passed object is readonly (i.e. bytes or a readonly memoryview) the returned ByteBuffer
+    will be a readonly Buffer object. Otherwise, a writable Buffer is returned.
+    """
 
     memoryview_of_obj = memoryview(obj)
     ro_view = memoryview_of_obj.readonly

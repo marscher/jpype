@@ -15,7 +15,6 @@
 #   See NOTICE file for details.
 #
 # *****************************************************************************
-import _jpype
 import jpype
 from jpype import java
 from jpype.types import *

@@ -16,23 +16,32 @@
 #
 # *****************************************************************************
 import _jpype
-from ._jinit import *
-from ._jpackage import *
-from ._jproxy import *
-from ._core import *
+from ._jinit import onJVMStart
+from ._jpackage import JPackage
+from ._jproxy import JProxy, JImplements
+from ._core import (
+    isJVMStarted, startJVM, shutdownJVM,
+    getDefaultJVMPath, getJVMVersion,
+    isThreadAttachedToJVM, attachThreadToJVM,
+    detachThreadFromJVM, synchronized,
+    JVMNotFoundException, JVMNotSupportedException,
+    JVMNotRunning
+)
 from . import _core
-from ._gui import *
-from ._classpath import *
-from ._jclass import *
-from ._jobject import *
+from ._gui import setupGuiEnvironment, shutdownGuiEnvironment
+from ._classpath import addClassPath, getClassPath
+from ._jclass import JClass, JInterface, JOverride
+from ._jobject import JObject
 # There is a bug in lgtm with __init__ imports.  It will be fixed next month.
 from . import _jarray       # lgtm [py/import-own-module]
 from . import _jexception   # lgtm [py/import-own-module]
-from .types import *
-from ._jcustomizer import *
+from .types import (
+    JArray, JClass, JBoolean, JByte, JChar, JShort,
+    JInt, JLong, JFloat, JDouble, JString, JObject, JException
+)
+from ._jcustomizer import JImplementationFor, JConversion
 from . import nio           # lgtm [py/import-own-module]
 from . import types         # lgtm [py/import-own-module]
-from ._jcustomizer import *
 # Import all the class customizers
 # Customizers are applied in the order that they are defined currently.
 from . import _jmethod      # lgtm [py/import-own-module]

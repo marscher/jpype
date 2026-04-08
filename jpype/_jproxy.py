@@ -29,7 +29,7 @@ def _checkInterfaceOverrides(interfaces, overrides):
         for method in interface.class_.getMethods():
             if method.getModifiers() & 1024 == 0:
                 continue
-            if not str(method.getName()) in overrides:
+            if str(method.getName()) not in overrides:
                 raise NotImplementedError("Interface '%s' requires method '%s' to be implemented." % (
                     interface.class_.getName(), method.getName()))
 

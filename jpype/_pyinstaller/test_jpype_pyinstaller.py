@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from subprocess import run
 
-import jpype
 import PyInstaller.__main__
 
 

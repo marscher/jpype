@@ -140,7 +140,7 @@ class JImportCustomizer(object):
 
 def unwrap(name):
     # Deal with Python keywords in the Java path
-    if not '_' in name:
+    if '_' not in name:
         return name
     return ".".join([_keywordUnwrap(i) for i in name.split('.')])
 
@@ -152,7 +152,7 @@ class _JImportLoader:
         # If jvm is not started then we just check against the TLDs
         if not _jpype.isStarted():
             base = name.partition('.')[0]
-            if not base in _JDOMAINS:
+            if base not in _JDOMAINS:
                 return None
             raise ImportError(
                 "Attempt to create Java package '%s' without jvm" % name)

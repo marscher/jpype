@@ -25,7 +25,7 @@ __all__ = ['getDefaultJVMPath',
            'JVMNotFoundException',
            'JVMNotSupportedException']
 
-from typing import Sequence, Tuple
+from typing import Tuple
 
 
 class JVMNotFoundException(ValueError):

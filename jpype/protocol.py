@@ -19,7 +19,6 @@ import _jpype
 import datetime
 import decimal
 import sys
-import _jpype
 from . import _jclass
 from . import _jcustomizer
 
@@ -38,7 +37,6 @@ _JBuffer = _jpype._JBuffer
 if sys.version_info < (3, 8):  # pragma: no cover
     from typing_extensions import Protocol, runtime_checkable
     from typing import Sequence, Mapping, Set  # lgtm [py/unused-import]
-    from typing import SupportsFloat, Callable  # lgtm [py/unused-import]
 
     @runtime_checkable
     class SupportsIndex(Protocol):
@@ -48,9 +46,8 @@ if sys.version_info < (3, 8):  # pragma: no cover
 else:
     # 3.8 onward
     from typing import Protocol, runtime_checkable
-    from typing import SupportsIndex, SupportsFloat  # lgtm [py/unused-import]
     # lgtm [py/unused-import]
-    from typing import Sequence, Mapping, Set, Callable
+    from typing import Sequence, Mapping, Set
 
 # Types we need
 

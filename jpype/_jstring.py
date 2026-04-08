@@ -62,7 +62,7 @@ class _JStringProto:
         return self.contains(other)  # type: ignore[attr-defined]
 
     def __hash__(self):
-        if self == None:  # lgtm [py/test-equals-none]
+        if self == None:  # noqa: E711
             return hash(None)
         return self.__str__().__hash__()
 

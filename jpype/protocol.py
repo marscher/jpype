@@ -18,7 +18,6 @@
 import _jpype
 import datetime
 import decimal
-import sys
 from . import _jclass
 from . import _jcustomizer
 
@@ -34,20 +33,12 @@ _JBoolean = _jpype._JBoolean
 _JArray = _jpype._JArray
 _JBuffer = _jpype._JBuffer
 
-if sys.version_info < (3, 8):  # pragma: no cover
-    from typing_extensions import Protocol, runtime_checkable
-    from typing import Sequence, Mapping, Set  # lgtm [py/unused-import]
-
-    @runtime_checkable
-    class SupportsIndex(Protocol):
-        def __index__(self) -> int: ...
-
-
-else:
-    # 3.8 onward
-    from typing import Protocol, runtime_checkable
-    # lgtm [py/unused-import]
-    from typing import Sequence, Mapping, Set
+from typing import (Protocol, runtime_checkable,
+                    Sequence, Mapping, Set,
+    # fixme: these two are only used in testing, we should remove them.
+                    SupportsIndex,  # noqa
+                    SupportsFloat,  # noqa
+                    )
 
 # Types we need
 

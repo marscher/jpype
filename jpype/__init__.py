@@ -27,28 +27,23 @@ from ._core import (
     JVMNotFoundException, JVMNotSupportedException,
     JVMNotRunning
 )
-from . import _core # fixme: do we need this?
 from ._gui import setupGuiEnvironment, shutdownGuiEnvironment
 from ._classpath import addClassPath, getClassPath
 from ._jclass import JClass, JInterface, JOverride
-from ._jobject import JObject
-# There is a bug in lgtm with __init__ imports.  It will be fixed next month.
-from . import _jarray       # lgtm [py/import-own-module]
-from . import _jexception   # lgtm [py/import-own-module]
 from .types import (
-    JArray, JClass, JBoolean, JByte, JChar, JShort,
+    JArray, JBoolean, JByte, JChar, JShort,
     JInt, JLong, JFloat, JDouble, JString, JObject, JException
 )
 from ._jcustomizer import JImplementationFor, JConversion
-from . import nio           # lgtm [py/import-own-module]
-from . import types         # lgtm [py/import-own-module]
+from . import nio
+from . import types
 # Import all the class customizers
 # Customizers are applied in the order that they are defined currently.
-from . import _jmethod      # lgtm [py/import-own-module]
-from . import _jcollection  # lgtm [py/import-own-module]
-from . import _jio          # lgtm [py/import-own-module]
-from . import protocol      # lgtm [py/import-own-module]
-from . import _jthread      # lgtm [py/import-own-module]
+from . import _jmethod # noqa: F401
+from . import _jcollection # noqa: F401
+from . import _jio # noqa: F401
+from . import protocol # noqa: F401
+from . import _jthread # noqa: F401
 
 __all__ = [
     'onJVMStart',
@@ -72,14 +67,12 @@ __all__ = [
     'JProxy', 'JImplements',
     'JPackage',
     # modules:
-    'protocol','nio', 'types',
-    'java', 'javax']
-
-__all__.extend(_core.__all__)
+    'protocol', 'nio', 'types',
+    'java', 'javax',
+]
 
 __version__ = "1.6.1.dev0"
 __version_info__ = __version__.split('.')
-
 
 # FIXME these should be deprecated. The old JPackage system is only for
 #  python2 series and generates lots of deceptive classes.  At some point
@@ -93,4 +86,6 @@ JField = _jpype._JField
 
 if hasattr(_jpype, 'bootstrap'):
     _jpype.bootstrap()
+    from jpype import _core
     _core.initializeResources()
+    del _core

@@ -54,7 +54,8 @@ class JVMNotRunning(RuntimeError):
 
 # Activate jedi tab completion
 try:
-    from jedi import __version__ as _jedi_version # first check
+    # first check
+    from jedi import __version__ as _jedi_version # noqa: F401
     try:
         import jedi.access as _jedi_access
         _jedi_access.ALLOWED_DESCRIPTOR_ACCESS += _jpype._JMethod, _jpype._JField  # jedi < 0.18

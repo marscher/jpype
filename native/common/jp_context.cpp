@@ -21,6 +21,7 @@
 #include "jp_proxy.h"
 #include "jp_platform.h"
 #include "jp_gc.h"
+#include "jp_crashhandler.h"
 
 #ifdef WIN32
 #include <Windows.h>
@@ -49,6 +50,9 @@ JPContext::JPContext()
 	m_Embedded = false;
 
 	m_GC = new JPGarbageCollection();
+	
+	// Initialize crash handler for comprehensive diagnostics
+	JPCrashHandler::initialize();
 }
 
 JPContext::~JPContext()

@@ -18,6 +18,7 @@
 
 #include "jpype.h"
 #include "jp_exception.h"
+#include "jp_crashhandler.h"
 #include "pyjp.h"
 
 static_assert(std::is_nothrow_copy_constructible<JPypeException>::value,
@@ -364,9 +365,15 @@ void JPypeException::toPython()
 		// urp?!
 		JPTracer::trace("Fatal error in exception handling");
 
-		// You shall not pass!
-		int *i = nullptr;
-		*i = 0;
+		// Use crash handler to capture comprehensive diagnostics
+		JPCrashInfo crashInfo = JPCrashHandler::captureCrashInfo(
+			"Unrecoverable error during exception handling",
+			-1
+		);
+		JPCrashHandler::printCrashReport(crashInfo);
+		
+		// Exit gracefully
+		_exit(1);
 	}
 	// GCOVR_EXCL_STOP
 	JP_TRACE_OUT; // GCOVR_EXCL_LINE
@@ -422,9 +429,15 @@ void JPypeException::toJava()
 		JPStackInfo info = ex.m_Trace.front();
 		JPTracer::trace(info.getFile(), info.getFunction(), info.getLine());
 
-		// Take one for the team.
-		int *i = nullptr;
-		*i = 0;
+		// Use crash handler to capture comprehensive diagnostics
+		JPCrashInfo crashInfo = JPCrashHandler::captureCrashInfo(
+			std::string("Fatal JPypeException in toJava(): ") + ex.what(),
+			-1
+		);
+		JPCrashHandler::printCrashReport(crashInfo);
+		
+		// Exit gracefully
+		_exit(1);
 		// GCOVR_EXCL_STOP
 	} catch (...) // GCOVR_EXCL_LINE
 	{
@@ -432,9 +445,15 @@ void JPypeException::toJava()
 		// urp?!
 		JPTracer::trace("Fatal error in exception handling");
 
-		// It is pointless, I can't go on.
-		int *i = nullptr;
-		*i = 0;
+		// Use crash handler to capture comprehensive diagnostics
+		JPCrashInfo crashInfo = JPCrashHandler::captureCrashInfo(
+			"Unrecoverable error during exception conversion to Java",
+			-1
+		);
+		JPCrashHandler::printCrashReport(crashInfo);
+		
+		// Exit gracefully
+		_exit(1);
 		// GCOVR_EXCL_STOP
 	}
 	JP_TRACE_OUT; // GCOVR_EXCL_LINE

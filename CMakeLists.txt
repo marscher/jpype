@@ -138,6 +138,7 @@ set(JPYPE_NATIVE_SRC
         native/common/jp_classtype.cpp
         native/common/jp_context.cpp
         native/common/jp_convert.cpp
+        native/common/jp_crashhandler.cpp
         native/common/jp_doubletype.cpp
         native/common/jp_encoding.cpp
         native/common/jp_exception.cpp

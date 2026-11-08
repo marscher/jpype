@@ -28,6 +28,15 @@ Latest Changes:
     appended to while other threads iterated it.  Every change now publishes
     a new immutable list, which readers use without taking a lock.
 
+  - Fixed a race reading the conversion information of a class.  The six
+    introspection lists (``returns``, ``implicit``, ``exact``, ``explicit``,
+    ``none``, ``attributes``) were stored as attributes on the shared
+    ``JClassHints`` object, where concurrent readers could see a partially
+    filled or outdated set.  They are now built per call by the private
+    ``JClass._conversionInfo()``, which returns a fresh namespace, and
+    ``JClass._hints`` returns only the hints object.  Nothing in JPype reads
+    these lists; they exist for introspection.
+
   - Fixed a race in Java package scanning on free-threaded Python.  Jar
     file systems are closed when too many are open, so package contents and
     class lookups now use the same ``FS_LOCK``; a thread can no longer read
